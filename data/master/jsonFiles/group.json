@@ -1,0 +1,34 @@
+[
+	{
+		"_id"							: ObjectId("A20484567892345678900001"),
+
+		"name"						: "Admin Group",
+		"description"				: "Users who have privileged rights and who has access to modify the content of the application, adding, deleting users etc ",
+		"users"						:
+		[
+			ObjectId("A20474567892345678900001")
+		]
+	},
+
+	{
+		"_id"							: ObjectId("A20484567892345678900002"),
+
+		"name"						: "Employee Group",
+		"description"				: "Users who belong to Employee Group",
+		"users"						:
+		[
+			ObjectId("A20474567892345678900002")
+		]
+	},
+
+	{
+		"_id"							: ObjectId("A20484567892345678900003"),
+
+		"name"						: "Sr. Manager Group",
+		"description"				: "Users who belong to Sr. Manager Group",
+		"users"						:
+		[
+			ObjectId("A20474567892345678900003")
+		]
+	}
+]

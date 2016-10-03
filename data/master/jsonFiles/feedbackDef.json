@@ -1,0 +1,47 @@
+[	
+	
+	
+		{
+	
+		"_id"							: ObjectId("A10234567892345678900001"),	
+		"title"								: "Presentation Feedback",
+		"type"								: "session", 
+		"item"								: 
+			[
+				{
+					"query"							: "Is the Presentation meets the visit agenda ",
+					"mode"							:  "star-rating", 
+					"choices"						: [ ]
+						
+				},
+				
+				{
+					"query"							: "Are the Speakers Audible",
+					"mode"							:  "star-rating",
+					"choices"						: [ ]
+				},
+				
+
+				
+				{
+					"query"							: "The presenter effectively communicated the content of the presentation",
+					"mode"							:  "star-rating", 
+					"choices"						:  [ ]
+				},
+				
+				
+				{
+					"query"							: "Rate Us",
+					"mode"							:  "star-rating",
+					"choices"						:  [ ]
+				}
+			],
+		
+		"createBy"						:  ObjectId("A02234567892345678900001"),
+		"createOn"						: { "$date" : "2016-03-03T10:00:00.000Z"} 
+	}
+
+	
+	
+
+]
