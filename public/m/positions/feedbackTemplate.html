@@ -1,0 +1,113 @@
+<style>
+
+.tb-big {
+    height: 125px;
+
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    font-size: 1.1em;
+    box-shadow: 2px 2px 5px #676767;
+
+    font-family: robotoRegular;
+}
+
+.tb-small {
+    height: 48px;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    font-size: 1.1em;
+    box-shadow: 2px 2px 5px #676767;
+    font-family: robotoRegular;
+}
+    
+.divtop{
+    padding-top: 80px;
+}
+    
+input.star {
+   display: none;
+}
+    
+label.star {
+    float: right;
+    color: #F3C227;
+    font-size: 1.6em;
+    padding-right: 5px;
+}
+    
+input.star:checked ~ label.star:before {
+    content: '\f005';
+    color: #F3C227;
+}
+    
+input[type=checkbox] {
+    margin-right: 5px;
+    margin-top: 0px;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 19px;
+    cursor: pointer;
+    outline: none;
+    background: url('/public/assets/m/img/ic/checkbox-sprite.png') no-repeat;
+    background-position: 0px 0px;
+    background-size: 36px;
+}
+    
+input[type=checkbox]:checked {
+    background: url('/public/assets/m/img/ic/checkbox-sprite.png') no-repeat;
+    background-position: -18px 0px;
+    background-size: 36px;
+}
+
+progress{
+    width: 100%;
+    height: 5px;
+    margin: 2px;
+
+}
+progress {background-color: #8fa6c8 !important;}
+
+progress::-moz-progress-bar {background-color: #8fa6c8 !important;}
+
+progress::-webkit-progress-value {background-color: #8fa6c8 !important;}
+
+</style>
+    
+<div header showprofile="false" icon="fa fa-line-chart" title1="Candidate Feedback" >
+
+</div>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+<div class="sessionfeedback">
+    <div feedback feedback-id="feedbackId" position-id="positionId" candidate-id="candidateId" feedback-model type="feedbackModel"></div>
+</div> 
+
+<div class="list-group">
+    <div href="#" class="list-group-item" ng-repeat="feedback in feedbackList">          
+        <div class="col-xs-8 col-sm-10 col-md-10">
+           <div class="representative-designation">{{feedback.query}}</div>
+        </div> 
+          <div class="col-xs-8 col-sm-10 col-md-10">
+           <div class="representative-designation">{{feedback.mode}}</div>
+        </div> 
+          <div class="col-xs-8 col-sm-10 col-md-10">
+           <div class="representative-designation">{{feedback.choices}}</div>
+        </div> 
+    </div>
+</div>
+
+<div ng-if="feedbackList.length==0">
+    Oops!@! No Feedback Template 
+</div>

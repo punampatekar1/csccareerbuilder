@@ -9,7 +9,8 @@ module.exports = {
 			"/public/assets/w/styles/dataview-table.css",
 			"/public/assets/w/styles/dataview-panels.css",
 			"/public/assets/w/styles/userpicker.css",
-
+            "/public/assets/g/css/rateit.css",
+            "/public/assets/g/css/toaster.css",
 			"/public/assets/g/css/sidebar.css",
 			"/public/assets/m/css/font.css",
 			"/public/assets/w/styles/tooltip.css",
@@ -22,7 +23,8 @@ module.exports = {
 			"/public/assets/w/styles/dataview-table.min.css",
 			"/public/assets/w/styles/dataview-panels.min.css",
 			"/public/assets/w/styles/userpicker.min.css",
-
+            "/public/assets/g/css/rateit.css",
+            "/public/assets/g/css/toaster.css",
 			"/public/assets/g/css/sidebar.min.css",
 			"/public/assets/m/css/font.min.css",
 			"/public/assets/w/styles/tooltip.min.css",
@@ -128,13 +130,21 @@ module.exports = {
 			"/public/d/userDisplay/script.js",
 			"/public/d/scroll/scroll.js",
 			"/public/d/header/header.js",
-			"/public/d/userView/script.js"
+			"/public/d/userView/script.js",
+            "/public/d/feedbackDirective/script.js",
+            "/public/assets/g/js/rateit.js",
+            "/public/assets/g/js/toaster.js",
+            "/public/d/confirmDialog/script.js"
 			],
 			"prod":[
 			"/public/d/userDisplay/script.js",
 			"/public/d/scroll/scroll.js",
 			"/public/d/header/header.js",
-			"/public/d/userView/script.js"
+			"/public/d/userView/script.js",
+            "/public/d/feedbackDirective/script.js",
+            "/public/assets/g/js/rateit.js",
+            "/public/assets/g/js/toaster.js",
+            "/public/d/confirmDialog/script.js"
 			]
 		},
 
@@ -188,6 +198,18 @@ module.exports = {
                 "/public/m/positions/positionsCtrl.js",
                 "/public/assets/m/css/openpositions.css",
                 "/public/assets/m/css/userview.css"
+            ]
+        },
+
+        "m-feedback":{
+		  "dev":[
+                "/public/m/feedback/feedback.js",
+                "/public/m/feedback/feedbackCtrl.js"
+            ],
+            
+            "prod":[
+                "/public/m/feedback/feedback.js",
+                "/public/m/feedback/feedbackCtrl.js"
             ]
         },
 

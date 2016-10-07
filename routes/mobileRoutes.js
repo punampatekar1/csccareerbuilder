@@ -38,4 +38,14 @@ module.exports = function(app) {
         res.render('mobile/home.ejs', {layout: activeLayout
         });
     }); 
+    
+// route to feedback module
+  app.get('/m/positions/:id/feedback', auth.isLoggedIn, function(req, res) {
+        res.locals.pageTitle = "Feedback";
+        res.locals.appName = "ng-app='mappXL-positions'"
+        res.locals.stdAssets = assetBuilder.getAssets("stdAssets", "m-general,m-angular,m-positions");
+        res.locals.appAssets = assetBuilder.getAssets("appAssets", "m-general,m-angular,m-positions");
+        res.render('mobile/home.ejs', {layout: activeLayout
+        });
+    }); 
 }

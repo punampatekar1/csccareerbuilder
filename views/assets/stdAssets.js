@@ -153,6 +153,23 @@ module.exports = {
 			"/public/libs/ng-file-upload/ng-file-upload-shim.min.js"
 			]
 		},
+        
+        "angular-pdf":{
+			"cdn":[],
+			"dev":[
+			"/public/libs/pdfjs-dist/build/pdf.combined.js",
+			"/public/assets/js/angular-pdf-viewer.min.js"
+			],
+		}, 
+        
+        "angular-dialog":{
+			"cdn":[],
+			"dev":[
+			"/public/assets/styles/ngDialog-theme-default.css",
+			"/public/assets/styles/ngDialog.css",
+			"/public/assets/js/ngDialog.min.js"
+			],
+		}, 
 
 		"angular-image":{
 			"cdn":[],

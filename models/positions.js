@@ -5,6 +5,8 @@ var mongoose = require('mongoose')
 
 var candidateSchema = require('./candidates');
 
+var feedbackDefSchema = require('./feedbackDef');
+
 var positionSchema = new mongoose.Schema({
         positionId                    : String,
         jobTitle                      : String,
@@ -14,8 +16,9 @@ var positionSchema = new mongoose.Schema({
         location                      : String,
         /*selectedCandidate           : type: [{ type: Schema.Types.ObjectId, ref: 'candidate' }]*/
         jobDescription                : String,
-        candidate					  : [{
-            candid      			  : {type: Schema.Types.ObjectId, ref: 'candidates'}           
+	    feedbackTmpl				  : {type: Schema.Types.ObjectId, ref: 'feedbackDefs'},
+        candidate		              : [{
+            candid      	          : {type: Schema.Types.ObjectId, ref: 'candidates'}           
         }]
 	});
 

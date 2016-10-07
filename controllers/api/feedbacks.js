@@ -1,8 +1,7 @@
 'use strict';
 
 var constants         = require('../../scripts/constants');
-var dataService     = require(constants.paths.services + '/positions');
-var logger     = require(constants.paths.scripts + '/logger');
+var dataService     = require(constants.paths.services + '/feedbacks');
 
 var controller = {}
 
@@ -12,11 +11,11 @@ controller.create     = create;
 controller.getOneById = getOneById;
 controller.updateById = updateById;
 controller.deleteById = deleteById;
-controller.getFeedbackById = getFeedbackById;
-controller.getCandidatesById = getCandidatesById;
 
 module.exports = controller;
 
+
+//call  getAll() function from the Feedbacks service
 function getAll(req,res){
   dataService.getAll()
     .then(function(data){
@@ -32,23 +31,10 @@ function getAll(req,res){
     });
 }
 
-function getFeedbackById(req,res){
-    dataService.getFeedbackById(req.params.id)
-    .then(function(data){
-        if (data){
-            res.send(data);
-        }else {
-            res.sendStatus(404);
-        }
-    })
-    .catch(function (err){
-        console.log("exception" + err);
-        res.status(500).send(err);
-    });
-}
 
+//call  getOneById() function from the Feedbacks service
 function getOneById(req,res){
-    dataService.getOneById(req.params.id)
+  dataService.getOneById(req.params.id)
     .then(function(data){
         if (data){
             res.send(data);
@@ -62,14 +48,12 @@ function getOneById(req,res){
     });
 }
 
+
+//call  create() function from the Feedbacks service
 function create(req, res) {
-  dataService.create(req.body,res)
-    .then(function (data) {
-        if (data){
-            res.send(data);
-        }else {
-            res.status(404).send("Doc not added");
-        }
+  dataService.create(req.body)
+    .then(function () {
+        res.status(200).send("Doc added successfully");
     })
     .catch(function (err) {
         console.log("cntrl create: err - " + err);
@@ -77,6 +61,8 @@ function create(req, res) {
     });
 }
 
+
+//call  deleteById() function from the Feedbacks service
 function deleteById(req, res) {
   dataService.deleteById(req.params.id)
     .then(function () {
@@ -88,29 +74,15 @@ function deleteById(req, res) {
     });
 }
 
+
+//call  updateById() function from the Feedbacks service
 function updateById(req, res) {
   dataService.updateById(req.params.id, req.body)
     .then(function () {
         res.status(200).send("Doc updated successfully");
-    })
+    }) 
     .catch(function (err) {
         console.log(err);
-        res.status(500).send(err);
-    });
-}
-
-function getCandidatesById (req,res){
-    dataService.getCandidatesById(req.params.id)
-    .then(function(data){
-        if (data){
-            res.send(data);
-        } else {
-            logger.Json("No Candidates Applied");
-            res.status(404).send("No Candidates Applied");
-        }
-    })
-    .catch(function (err){
-        console.log("exception" + err);
         res.status(500).send(err);
     });
 }

@@ -8,10 +8,10 @@ module.exports = {
 		},
 		{
 			name: "Create Position",
-			link: "/m/visits/#/execBios",
+			link: "/m/positions/#/createpos",
 			icon: "fa-group",
-			roles: "user,customer,exec,vManager,admin"
-		},
+			roles: "admin"
+		}, 
 		{
 			name: "Open Positions",
 			link: "/m/positions#/positions",

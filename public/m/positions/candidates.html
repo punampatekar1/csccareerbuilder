@@ -19,9 +19,13 @@
         </div>
     </div> !-->
 </div>
+
+<div class="col-xs-5">
+      <input type="text" class="form-control" placeholder="Search" ng-model="search.$" />      
+</div> 
     
 <div class="list-group">
-    <div href="#" class="list-group-item" ng-repeat="candidate in candidateList">
+    <div href="#" class="list-group-item" ng-repeat="candidate in candidateList | filter: search | orderBy:orderByField:reverseSort">
         <div class="representative-pic col-xs-2 col-sm-1 col-md-1">
             <div>
             <img ng-src={{candidate.avatar}} class="img-circle userpic-bullet"/>
@@ -39,8 +43,12 @@
         <div>
             <!--<a ng-href="tel: {{candidate.contactNumber}}" class="tele-link">
                 <div class="chevronnew-div col-xs-10 col-sm-1 col-md-1"> </div>
-            </a>-->
-            <a ng-href="mailto: {{candidate.email}}" class = "email-link">
+            </a>
+
+            <a ng-href="{{candidate.email}}" class = "email-link">
+                <div class="chevron-div col-xs-1 col-sm-1 col-md-1"> </div>
+            </a> -->
+            <a ng-href="#/positions/{{positionId}}/{{candidate.id}}/feedback" class = "email-link">
                 <div class="chevron-div col-xs-1 col-sm-1 col-md-1"> </div>
             </a>         
         </div>    

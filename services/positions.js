@@ -21,6 +21,7 @@ service.getAllPositions = getAllPositions;
 service.getWithQuery = getWithQuery;
 
 service.getCandidatesById = getCandidatesById;
+service.getFeedbackById = getFeedbackById;
 
 module.exports = service;
 
@@ -41,10 +42,89 @@ function getAll(){
     return deferred.promise;
 } // getAll method ends
 
+function getFeedbackById(id){
+    console.log ("id = " + id);
+    var feedbackData = [];
+    var deferred = Q.defer();
+    model
+    .findOne({ positionId: id})
+    .populate('feedbackTmpl')
+	.exec(function (err, item) {
+		if(err) {
+			console.log(err);
+			deferred.reject(err);
+		}
+		else
+			//fetching candidates
+            console.log("going to fetch feedback");
+            console.log(item);
+            /*if (item.feedbackTmpl != null && item.feedbackTmpl.item!= null)
+            {
+                for (var i=0; i<item.feedbackTmpl.item.length; i++){
+                    feedbackData.push(transform(item.feedbackTmpl.item[i]));				
+                }
+            }*/
+			console.log(item.feedbackTmpl);
+			//deferred.resolve(feedbackData);
+            deferred.resolve(transform(item.feedbackTmpl));
+	 });
+
+	/*function transform(feedbackItem)
+	{
+		if (feedbackItem == null) {
+			console.log("error in adding");
+		}
+		else{
+			var feedbackData={
+                query:feedbackItem.query,
+				mode:feedbackItem.mode, 
+				choices:feedbackItem.choices
+			}
+			console.log("******************************");
+			console.log(feedbackData);
+			console.log("******************************");
+			return feedbackData;
+		}
+	}*/
+    
+    function transform(feedback)
+	{
+		if (feedback == null) {
+			console.log("error in adding");
+		}
+		else{
+            console.log ("In position.js in service feedbackDef._id = " + feedback._id)
+			var feedbackData={
+                id:feedback._id,
+				item:feedback.item, 
+				createdBy:feedback.createdBy,
+                createdOn:feedback.createdOn
+			}
+			console.log("******************************");
+			console.log(feedbackData);
+			console.log("******************************");
+			return feedbackData;
+		}
+	}
+
+	function sortOn(property){
+		return function(a, b){
+			if(a[property] < b[property]){
+				return -1;
+			}else if(a[property] > b[property]){
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+	}
+	return deferred.promise;
+}
+
 function getOneById(id){
     var deferred = Q.defer();
     model
-    .findOne({ _id: id })
+    .findOne({ positionId: id })
     .exec(function (err, item) {
         if(err) {
             console.log(err);
@@ -59,7 +139,26 @@ function getOneById(id){
     return deferred.promise;
 } // gentOneById method ends
 
-function create(positionParam) {
+function create(data) {
+    var deferred = Q.defer();
+    console.log(data);
+    model.create(data, function (err, doc) {
+        if (err) {
+            console.log("err- " + err);
+            deferred.reject(err);
+        }
+        else
+        {
+            console.log("here you are")
+            console.log(doc);
+            deferred.resolve(doc);
+        }
+    });
+
+    return deferred.promise;
+} 
+
+/*function create(positionParam) {
     var deferred = Q.defer();
 
     // validation
@@ -97,7 +196,7 @@ function create(positionParam) {
     }
 
     return deferred.promise;
-}
+}*/
 
 function updateById(id, data) {
     var deferred = Q.defer();
@@ -250,6 +349,7 @@ function getCandidatesById(id){
 		}
 		else{
 			var candidateData={
+                id:candidate.candid._id,
                 empId: candidate.candid.empId, 
                 empName: candidate.candid.empName, 
                 empShortId: candidate.candid.empShortId,

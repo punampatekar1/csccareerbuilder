@@ -9,8 +9,9 @@
         "validTill"               :{ "$date" : "2016-11-14T09:00:00.000+0530"},
         "location"                :"Hyderabad",
         "status"                  :"Open",
-        "jobDescription"          :"HyperLink Place holder",             
-        "candidate"			  :
+        "jobDescription"          :"HyperLink Place holder",
+        "feedbackTmpl"			  : ObjectId("B20474567892345678902221"),
+        "candidate"			      :
          [
             {
                 "candid"			: ObjectId("B20474567892345678900021")
@@ -30,7 +31,7 @@
                 "candid"			: ObjectId("B50474567892345678900021")
 
             } 
-        ]            
+        ]  
              
 	},
     
@@ -65,7 +66,8 @@
                 "candid"			: ObjectId("B50474567892345678900021")
 
             } 
-        ]      
+        ],
+        "feedbackTmpl"				: ObjectId("B20474567892345678902221")
 	},
     
 	{
@@ -99,7 +101,8 @@
                 "candid"			: ObjectId("B50474567892345678900021")
 
             } 
-        ]      
+        ],
+        "feedbackTmpl"				: ObjectId("B20474567892345678902221")
 	},
     
     {
@@ -133,6 +136,7 @@
                 "candid"			: ObjectId("B50474567892345678900021")
 
             } 
-        ]      
+        ],
+        "feedbackTmpl"				: ObjectId("B20474567892345678902221")   
 	}
 ] 

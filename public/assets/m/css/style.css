@@ -7,9 +7,18 @@
 
 div#profile-details {
   padding-top: 60px;
-  background: url("../img/bg/header.jpg") no-repeat;
-  background-size: 113%;
+  background: url("../img/bg/headerbg.png") repeat;
+  background-color: #800080;
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #FFF;
 }
+
+.profile-overview {
+    text-align: center;
+    text-shadow: 4px 6px 4px #ccc;
+}
+
 
 div#profile-details .profile-pic,
 div#profile-details .profile-name,
@@ -80,6 +89,8 @@ div#profile-details .profile-location img {
   border-bottom: dotted 1px #fff;
   padding-bottom: 2px;
 }
+
+
 
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 374px) {

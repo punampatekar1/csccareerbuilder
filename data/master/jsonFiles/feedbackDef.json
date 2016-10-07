@@ -1,47 +1,40 @@
 [	
+
+    {
 	
-	
-		{
-	
-		"_id"							: ObjectId("A10234567892345678900001"),	
-		"title"								: "Presentation Feedback",
-		"type"								: "session", 
-		"item"								: 
+		"_id"							           : ObjectId("B20474567892345678902221"),	
+		"item"								       : 
 			[
 				{
-					"query"							: "Is the Presentation meets the visit agenda ",
+					"query"							: "Demonstrable relevant Architecture and Solutioning Experience",
 					"mode"							:  "star-rating", 
 					"choices"						: [ ]
 						
 				},
 				
 				{
-					"query"							: "Are the Speakers Audible",
+					"query"							: "Demonstrable Pre-sales or Consulting Experience",
 					"mode"							:  "star-rating",
 					"choices"						: [ ]
 				},
 				
-
-				
-				{
-					"query"							: "The presenter effectively communicated the content of the presentation",
-					"mode"							:  "star-rating", 
-					"choices"						:  [ ]
+            
+                {
+					"query"							: "Experience Communicating to/with High Level Executives",
+					"mode"							:  "single-choice", 
+					"choices"						: [ "Yes","No"]
 				},
 				
-				
 				{
-					"query"							: "Rate Us",
-					"mode"							:  "star-rating",
-					"choices"						:  [ ]
-				}
+					"query"							: "Comfort in Big 5",
+					"mode"							: "multi-choice",
+					"choices"						: ["Big Data",	"Cloud", "Apps Mod/DevOps","Cyber","Mobile"]
+				}                
 			],
 		
-		"createBy"						:  ObjectId("A02234567892345678900001"),
-		"createOn"						: { "$date" : "2016-03-03T10:00:00.000Z"} 
+		"createdBy"						:  ObjectId("A20474567892345678900021"),
+		"createdOn"						: { "$date" : "2016-03-03T10:00:00.000Z"} 
 	}
-
 	
-	
-
 ]
+

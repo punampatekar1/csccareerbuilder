@@ -7,5 +7,5 @@ angular.module('mappXL-main', [
 
 angular.module('mappXL-positions', [
 	'appFilters',
-	'positions','header','scroll'
+	'positions','feedbackDirective','ngRateIt','header','scroll','confirmDialogDirective'
 ]);
