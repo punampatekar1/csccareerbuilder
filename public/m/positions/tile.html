@@ -8,36 +8,36 @@
 .jItem{
   background: #FFF none repeat scroll 0% 0%;
   box-shadow: 10px 10px 5px #888888;
-  /*background: #AC193D;*/
   box-sizing: border-box;
   border: 1px solid #FFF;
   border-radius: 2px;
   overflow: hidden;
-  float: left;
-  width: 302px;
-  margin-right: 29px;
+  width: 303px;
   height: 244px;
   margin-bottom: 17px;
   padding: 10px;
   color: #FFF;
-}
-
-.jItem:hover{
-  background: darken("#AC193D", 10%);
+  margin-right: 16px;
 }
 
 .job-info-container{
     margin-top: 31px;
 }
 
-@media only screen and (max-width: 375px) {
-  .col-xs-12,.container {
-    padding-right: 0px;
-    padding-left: 0px;
+.jobsContainer ul{
+  margin-left: -45px;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 374px){
+  .jItem{
+    width: auto;
+    margin-right: auto;
   }
-  .page-header {
-      font-size: 1.5em !important;
-      margin: 11px 0 20px;
+}
+@media only screen and (min-device-width: 375px) and (max-device-width: 480px) {
+  .jItem{
+    width: auto;
+    margin-right: auto;
   }
 }
 
@@ -48,10 +48,10 @@
 
 <div class="container">
   <div class="row searchWrapper">
-    <div class="col-sm-9 col-md-4 col-xs-9">
+    <div class="col-sm-9 col-md-4 col-xs-6">
       <input type="text" class="form-control" placeholder="Search" ng-model="search.$" />
     </div>
-    <div class="col-sm-3 col-md-6 col-xs-3">
+    <div class="col-sm-3 col-md-6 col-xs-6">
       <div ng-include src="'/public/m/positions/sort.html'"></div>
     </div>
  </div><!--row end here -->
@@ -62,8 +62,8 @@
     <div class="jobsContainer">
         <div class="itemWrapper">
           <ul>
-            <li class="jItem" ng-repeat="position in positionList | filter: search |orderBy:orderByField:reverseSort">
-                <!--a href="#" target="_blank"-->
+            <li class="col-sm-12 jItem" ng-repeat="position in positionList | filter: search |orderBy:orderByField:reverseSort">
+
                     <p class="pull-right">
                       <a href="#/positions/{{position.positionId}}/edit"><span class="fa fa-pencil-square-o" style="color:#800080;"/></a>
 
@@ -109,7 +109,7 @@
                       </div>
                     </div>
                   </section>
-                  <!--/a-->
+
             </li>
           </ul>
         </div> 

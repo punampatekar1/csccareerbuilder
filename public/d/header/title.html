@@ -21,7 +21,7 @@ height:60px;
                     
                     <div class="profile-details-div">
                       
-                        <a id="menu-toggle" href="#menu-toggle">
+                        <a id="menu-toggle">
                            <i class="fa fa-bars" style="color:#FFF;font-size:25px;"></i> 
                         </a>
                    &nbsp;&nbsp;       
@@ -38,8 +38,14 @@ height:60px;
            </div>
 
 <script>
-    $("#menu-toggle").click(function(e) {
+    /*$("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#page").toggleClass("toggled");
+    });*/
+
+     $(document).on("click", "#menu-toggle", function(e) {
+        e.preventDefault();
+        $("#page").toggleClass("toggled");
+        e.stopImmediatePropagation();
     });
 </script>
