@@ -5,6 +5,13 @@
   text-align: center;
 }
 
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
 div#profile-details {
   padding-top: 60px;
   background: url("../img/bg/headerbg.png") repeat;
