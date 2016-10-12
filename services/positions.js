@@ -19,6 +19,7 @@ service.updateById = updateById;
 service.deleteById = deleteById;
 service.getAllPositions = getAllPositions;
 service.getWithQuery = getWithQuery;
+service.updateFeedBackId = updateFeedBackId;
 
 service.getCandidatesById = getCandidatesById;
 service.getFeedbackById = getFeedbackById;
@@ -42,8 +43,9 @@ function getAll(){
     return deferred.promise;
 } // getAll method ends
 
-function getFeedbackById(id){
+function getFeedbackById(id, candidateId){
     console.log ("id = " + id);
+    console.log ("candidateId = " + candidateId);
     var feedbackData = [];
     var deferred = Q.defer();
     model
@@ -58,18 +60,18 @@ function getFeedbackById(id){
 			//fetching candidates
             console.log("going to fetch feedback");
             console.log(item);
-            /*if (item.feedbackTmpl != null && item.feedbackTmpl.item!= null)
+            if (item.feedbackTmpl != null && item.feedbackTmpl.item!= null)
             {
                 for (var i=0; i<item.feedbackTmpl.item.length; i++){
                     feedbackData.push(transform(item.feedbackTmpl.item[i]));				
                 }
-            }*/
+            }
 			console.log(item.feedbackTmpl);
-			//deferred.resolve(feedbackData);
-            deferred.resolve(transform(item.feedbackTmpl));
+			deferred.resolve(feedbackData);
+            //deferred.resolve(transform(item.feedbackTmpl));
 	 });
 
-	/*function transform(feedbackItem)
+	function transform(feedbackItem)
 	{
 		if (feedbackItem == null) {
 			console.log("error in adding");
@@ -85,9 +87,9 @@ function getFeedbackById(id){
 			console.log("******************************");
 			return feedbackData;
 		}
-	}*/
+	}
     
-    function transform(feedback)
+    /*function transform(feedback)
 	{
 		if (feedback == null) {
 			console.log("error in adding");
@@ -105,7 +107,7 @@ function getFeedbackById(id){
 			console.log("******************************");
 			return feedbackData;
 		}
-	}
+	}*/
 
 	function sortOn(property){
 		return function(a, b){
@@ -200,6 +202,10 @@ function create(data) {
 
 function updateById(id, data) {
     var deferred = Q.defer();
+    console.log("updateById in services ");
+    console.log("id = " + id);
+    
+    console.log("data = " + data);
 
     model.findByIdAndUpdate(id, data, function (err, doc) {
         if (err) {
@@ -208,7 +214,27 @@ function updateById(id, data) {
         }
         else
             deferred.resolve(doc);
-            system.info({positionId:doc._id},'Position Data Updated');
+            //system.info({positionId:doc._id},'Position Data Updated');
+    });
+
+    return deferred.promise;
+}
+
+function updateFeedBackId(id, data) {
+    var deferred = Q.defer();
+    console.log("updateFeedBackId in services ");
+    console.log("id = " + id);
+    
+    console.log("data = " + data);
+
+    model.findByIdAndUpdate(id, {feedbackTmpl : data}, function (err, doc) {
+        if (err) {
+            deferred.reject(err);
+            system.error({err:err},'Error in Position Update By Id Api Service');            
+        }
+        else
+            deferred.resolve(doc);
+            //system.info({positionId:doc._id},'Position Data Updated');
     });
 
     return deferred.promise;

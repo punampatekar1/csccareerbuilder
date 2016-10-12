@@ -14,6 +14,7 @@ service.create = create;
 service.getOneById = getOneById;
 service.updateById = updateById;
 service.deleteById = deleteById;
+service.getFeedbackById = getFeedbackById;
 
 module.exports = service;
 
@@ -52,6 +53,27 @@ function getOneById(id){
 
     return deferred.promise;
 } // gentOneById method ends
+
+
+//get one feedback by ID
+function getFeedbackById(positionId, candidateId, interviewerId){
+    var deferred = Q.defer();
+
+    model
+        .findOne({ positionid: positionId}, {candidateid: candidateId}, {interviewerid : interviewerId})
+        .exec(function (err, item) {
+            if(err) {
+                console.log("error");
+                console.log(err);
+                deferred.reject(err);
+            }
+            else
+                console.log(item);
+                deferred.resolve(item);
+        });
+
+    return deferred.promise;
+} // getFeedbackById method ends
 
 
 //create feedback

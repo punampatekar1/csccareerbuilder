@@ -48,4 +48,14 @@ module.exports = function(app) {
         res.render('mobile/home.ejs', {layout: activeLayout
         });
     }); 
+    
+// route to feedback module
+  app.get('/m/feedback/', auth.isLoggedIn, function(req, res) {
+        res.locals.pageTitle = "Feedback";
+        res.locals.appName = "ng-app='mappXL-feedbacks'"
+        res.locals.stdAssets = assetBuilder.getAssets("stdAssets", "m-general,m-angular,m-feedback");
+        res.locals.appAssets = assetBuilder.getAssets("appAssets", "m-general,m-angular,m-feedback");
+        res.render('mobile/home.ejs', {layout: activeLayout
+        });
+    }); 
 }

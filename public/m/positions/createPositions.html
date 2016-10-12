@@ -1,6 +1,6 @@
 
 
-<div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="OPEN POSITIONS" query='query' >
+<div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="CREATE JOB POSITION" query='query' >
 <!--  <div class="searchViewHead col-xs-12">
         <div class="searchDivHead col-xs-12 col-sm-8 col-md-10 div-padding">
 
@@ -12,16 +12,15 @@
 <div ng-controller="positionsCtrl">
  
  <div ng-if="mode=='add'" class="page-header">
-     Job Position Management  
-     <div class="sub-header">Add New Job Position
+      <div class="sub-header">Add New Job Position
      </div>
    </div>
 
    <div ng-if="mode=='edit'" class="page-header">
-    Job Position Management - Edit Job position
-    <div class="sub-header">Edit Job Description -{{jobPos.jobTitle}}
+      <div class="sub-header">Edit Job Description -{{jobPos.jobTitle}}
     </div>
   </div>
+      
 
 <form class="form-horizontal" role="form" name="createPositionForm" id="createPositionForm" enctype="multipart/form-data">
          <div class="form-group">

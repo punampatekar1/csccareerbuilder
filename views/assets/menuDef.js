@@ -12,7 +12,13 @@ module.exports = {
 			icon: "fa-group",
 			roles: "admin"
 		}, 
-		{
+        {
+			name: "Create Feedback Template",
+			link: "/m/positions/#/feedbackTmpl/add",
+			icon: "fa-group",
+			roles: "admin"
+		}, 
+  		{
 			name: "Open Positions",
 			link: "/m/positions#/positions",
 			icon: "fa-phone",
