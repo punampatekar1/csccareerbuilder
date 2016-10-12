@@ -11,7 +11,7 @@ controller.create     = create;
 controller.getOneById = getOneById;
 controller.updateById = updateById;
 controller.deleteById = deleteById;
-
+controller.getFeedbackById = getFeedbackById;
 module.exports = controller;
 
 
@@ -48,6 +48,21 @@ function getOneById(req,res){
     });
 }
 
+//call  getFeedbackById() function from the Feedbacks service
+function getFeedbackById(req,res){
+  dataService.getOneById(req.params.id, req.params.candidateId, req.params.interviewerId)
+    .then(function(data){
+        if (data){
+            res.send(data);
+        }else {
+            res.sendStatus(404);
+        }
+    })
+    .catch(function (err){
+        console.log("exception" + err);
+        res.status(500).send(err);
+    });
+}
 
 //call  create() function from the Feedbacks service
 function create(req, res) {

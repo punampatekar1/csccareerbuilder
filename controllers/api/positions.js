@@ -11,6 +11,7 @@ controller.create     = create;
 
 controller.getOneById = getOneById;
 controller.updateById = updateById;
+controller.updateFeedBackId = updateFeedBackId;
 controller.deleteById = deleteById;
 controller.getFeedbackById = getFeedbackById;
 controller.getCandidatesById = getCandidatesById;
@@ -33,7 +34,7 @@ function getAll(req,res){
 }
 
 function getFeedbackById(req,res){
-    dataService.getFeedbackById(req.params.id)
+    dataService.getFeedbackById(req.params.id, req.params.candidateId)
     .then(function(data){
         if (data){
             res.send(data);
@@ -90,6 +91,18 @@ function deleteById(req, res) {
 
 function updateById(req, res) {
   dataService.updateById(req.params.id, req.body)
+    .then(function () {
+        res.status(200).send("Doc updated successfully");
+    })
+    .catch(function (err) {
+        console.log(err);
+        res.status(500).send(err);
+    });
+}
+
+function updateFeedBackId(req, res) {
+    console.log ("Inside updateFeedBackId");
+  dataService.updateFeedBackId(req.params.id, req.params.feedbackId)
     .then(function () {
         res.status(200).send("Doc updated successfully");
     })

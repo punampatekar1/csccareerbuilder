@@ -1,5 +1,5 @@
 
-angular.module('positions', ['ngRoute'])
+angular.module('positions', ['ngRoute','ngMaterial','angular-growl'])
 
 .run(function ($rootScope, $location, $http) {
 	$http.get('/token')
@@ -17,34 +17,59 @@ angular.module('positions', ['ngRoute'])
   $routeProvider
   
   .when('/positions', {
-    templateUrl: '/public/m/positions/tile.html',
-    controller: 'positionsCtrl'
+        templateUrl: '/public/m/positions/tile.html',
+        controller: 'positionsCtrl'
   })
   
    .when('/positions/:id/candidates', {
-    templateUrl: '/public/m/positions/candidates.html',
-    controller: 'positionCtrl'
+        templateUrl: '/public/m/positions/candidates.html',
+        controller: 'positionCtrl'
   })
   
   .when('/createpos', {
-    templateUrl: '/public/m/positions/createPositions.html',
-    controller: 'positionsCtrl'
+        templateUrl: '/public/m/positions/createPositions.html',
+        controller: 'positionsCtrl'
   })
 
   .when('/positions/:id/edit', {
-    templateUrl: '/public/m/positions/createPositions.html',
-    controller: 'positionsCtrl'
+        templateUrl: '/public/m/positions/createPositions.html',
+        controller: 'positionsCtrl'
   })
   
   .when('/positions/:id/:candidateId/feedback', {
-    templateUrl: '/public/m/positions/feedbackTemplate.html',
-    controller: 'positionFeedbackCtrl'
+        templateUrl: '/public/m/positions/feedbackTemplate.html',
+        controller: 'positionFeedbackCtrl'
   })
 
    .when('/positions/panel', {
-    templateUrl: '/public/m/positions/openPositions.html',
-    controller: 'positionsCtrl'
+        templateUrl: '/public/m/positions/openPositions.html',
+        controller: 'positionsCtrl'
   }) 
+  
+   .when('/feedbackTmpl/list', {
+        templateUrl: '/public/m/positions/feedbackViewMain.html',
+        controller: 'feedbackController'
+    })
+
+   .when('/feedbackTmpl/attach/:id', {
+        templateUrl: '/public/m/positions/attachTemplate.html',
+        controller: 'feedbackController'
+    })
+
+    .when('/feedbackTmpl/add', {
+        templateUrl: '/public/m/positions/feedbackViewAdd.html',
+        controller: 'feedbackController'
+    })
+
+    .when('/feedbackTmpl/:id/edit', {
+        templateUrl: '/public/m/positions/feedbackViewAdd.html',
+        controller: 'feedbackController'
+    })
+
+    .when('/feedbackTmpl/panels', {
+        templateUrl: '/public/m/positions/partials/feedbackViewPanels.html',
+        controller: 'feedbackController'
+    });
   
   // if none of the above states are matched, use this as the fallback
   $routeProvider.otherwise('/positions');

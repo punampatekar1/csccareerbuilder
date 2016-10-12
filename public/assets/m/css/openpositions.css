@@ -65,7 +65,16 @@
     font-size: 1em;
 }
 button {
-    width: 130px;
+    width: 120px;
+    outline: #ccd0db 1px solid;
+    background: rgba(0, 0, 0, 0.6);
+    margin: 0 5px;
+    padding: 10px 20px;
+    margin-bottom: 5px;
+}
+
+button1 {
+    width: 120px;
     outline: #ccd0db 1px solid;
     background: rgba(0, 0, 0, 0.6);
     margin: 0 5px;
@@ -161,7 +170,7 @@ color : black;
 .my-visit-content {
     padding-top: 15px;
     padding-bottom: 15px;
-
+    position: absolute; 
     background-color: #eeeeee;
 }
 .visit-card {

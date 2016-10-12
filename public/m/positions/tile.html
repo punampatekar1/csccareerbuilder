@@ -43,6 +43,7 @@
 
 </style>
 
+
 <div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="OPEN POSITIONS" query='query' ></div>
 <div ng-include src="'/public/mods/jobs/search/searchForm.html'"></div>
 
@@ -78,7 +79,7 @@
                       <ul class="dropdown-menu">
                           <li><a href="#/positions/{{position.positionId}}/candidates">Candidates Applied</a></li>
                           <li class="divider"></li>
-                          <li><a href="/#/execBios/{{visit._id}}">Provide Feedback</a></li>
+                          <li><a href="#/feedbackTmpl/attach/{{position.positionId}}">Attach Feedback Query</a></li>
                           <li class="divider"></li>
                           <li><a target="_blank" href="/public/uploads/jd/{{position.positionId}}.doc">View JD</a></li>
                           <li class="divider"></li>
@@ -86,7 +87,7 @@
                       </ul>
                   </div>
                     <div class="visitlinks">
-                      <h4>{{position.positionId}}</h4>
+                      <h4>{{position.positionId}}</h4>/
                       <h5><a target="_blank" href="/public/uploads/jd/{{position.positionId}}.doc"><i class="fa fa-user" aria-hidden="true" style="padding-right:5px;"></i>{{position.jobTitle | uppercase}}</a></h5>
                     </div>
                     <div class="col-right">

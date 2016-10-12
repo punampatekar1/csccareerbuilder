@@ -141,7 +141,26 @@ module.exports = {
 			"/public/libs/angular-growl-v2/build/angular-growl.min.js"
 			]
 		},
-
+        
+        "angularMultipleSelect":{
+            "cdn":[],
+            "dev":[
+            "/public/libs/angular-multiple-select/build/multiple-select.min.js",
+            "/public/libs/angular-multiple-select/build/multiple-select.min.css"
+            ],
+        },
+        
+        "angular-filter": {
+            "cdn": [
+            ],
+            "dev":[
+            "/public/libs/angular-filter/dist/angular-filter.min.js",
+            "/public/libs/angular-filter/dist/angular-filter.js"
+            ],
+            "prod":[
+            ]
+        },
+        
 		"angular-fileupload":{
 			"cdn":[],
 			"dev":[
@@ -204,6 +223,14 @@ module.exports = {
 			"/public/assets/g/css/confirmDialog.min.css"
 			]
 		},
+        
+        "angular-forms":{
+            "cdn":[],
+            "dev":[
+            "/public/libs/angular-messages/angular-messages.min.js"
+            ],
+            "prod":[]
+        },
 
 		"utils":{
 			"cdn":[],

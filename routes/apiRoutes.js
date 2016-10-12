@@ -45,14 +45,21 @@ router.get('/api/v1/secure/positions/:id/candidates', positions.getCandidatesByI
 router.get('/api/v1/secure/positions/:id', positions.getOneById);
 router.post('/api/v1/secure/positions', positions.create);
 router.put('/api/v1/secure/positions/:id', positions.updateById);
+router.put('/api/v1/secure/positions/:id/:feedbackId', positions.updateFeedBackId);
 router.delete('/api/v1/secure/positions/:id', positions.deleteById); 
 
 // List of service routes for feedbackDefs
 router.get('/api/v1/secure/feedbackDefs/id/:id', feedbackDef.getOneById);
+router.get('/api/v1/secure/feedbackDefs', feedbackDef.getAll);
+router.post('/api/v1/secure/feedbackDefs', feedbackDef.create);
+router.put('/api/v1/secure/feedbackDefs/:id', feedbackDef.updateById);
+router.delete('/api/v1/secure/feedbackDefs/:id', feedbackDef.deleteById);
+router.get('/api/v1/secure/feedbackDefs/find', feedbackDef.getWithQuery);
 
 // List of service routes for feedbacks
 router.get('/api/v1/secure/feedbacks', feedbacks.getAll);
 router.get('/api/v1/secure/feedbacks/:id', feedbacks.getOneById);
+router.get('/api/v1/secure/feedbacks/:id/:candidateId/:interviewerId', feedbacks.getFeedbackById);
 router.post('/api/v1/secure/feedbacks', feedbacks.create);
 router.put('/api/v1/secure/feedbacks/:id', feedbacks.updateById);
 router.delete('/api/v1/secure/feedbacks/:id', feedbacks.deleteById);

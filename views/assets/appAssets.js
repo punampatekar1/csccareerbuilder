@@ -190,26 +190,14 @@ module.exports = {
                 "/public/m/positions/positions.js",
                 "/public/m/positions/positionsCtrl.js",
                 "/public/assets/m/css/openpositions.css",
-                "/public/assets/m/css/userview.css"
+                "/public/assets/m/css/userview.css"                
             ],
             
             "prod":[
                 "/public/m/positions/positions.js",
                 "/public/m/positions/positionsCtrl.js",
                 "/public/assets/m/css/openpositions.css",
-                "/public/assets/m/css/userview.css"
-            ]
-        },
-
-        "m-feedback":{
-		  "dev":[
-                "/public/m/feedback/feedback.js",
-                "/public/m/feedback/feedbackCtrl.js"
-            ],
-            
-            "prod":[
-                "/public/m/feedback/feedback.js",
-                "/public/m/feedback/feedbackCtrl.js"
+                "/public/assets/m/css/userview.css"               
             ]
         },
 

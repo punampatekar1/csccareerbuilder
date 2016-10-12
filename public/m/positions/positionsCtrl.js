@@ -134,10 +134,12 @@ angular.module('positions')
     $scope.showSaveNext = true;
     $scope.form_id = "form-" +  $scope.order;
     $scope.candidateId = $routeParams.candidateId;
-    $http.get('/api/v1/secure/positions/'+$routeParams.id+ '/' + $routeParams.candidateId + '/feedback',{
+    
+    $http.get('/api/v1/secure/feedbacks/'+$routeParams.id+ '/' + $routeParams.candidateId +  '/' + $rootScope.user._id,{
         cache: true
     }).success(function(response) {
         console.log("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+        console.log("response = " + response);
         $scope.overallFeedbackTmpl = response;
         $scope.positionId = $routeParams.id;
         $scope.feedbackId = $scope.overallFeedbackTmpl.id;
@@ -151,20 +153,27 @@ angular.module('positions')
                     $scope.finalFeedback=true;
                 } 
             }
-        };*/
-        $http.get('/api/v1/secure/feedbackDefs/id/'+ $scope.feedbackId).success(function(response) {
-            $scope.items = response.item;
-            $scope.length = response.item.length - 1;
-            $scope.feedbackModel = response;
-            $scope.max = $scope.length + 1;
-          
-            
-            console.log("feedbackId= " +  $scope.feedbackId );
-            console.log("$scope.positionId = " + $scope.positionId);
-            console.log("$scope.candidateId = " + $scope.candidateId);
-        });
+        };  */     
 
-    });
+    })
+    .error(function(response){
+        console.log('Feedback not saved. User going to enter feedback');
+        
+         $http.get('/api/v1/secure/positions/'+ $routeParams.id).success(function(response) {
+                console.log('Retreiving feedbackid from postions collection..');
+                console.log('feedbackid = ' + response.feedbackTmpl);
+                $http.get('/api/v1/secure/feedbackDefs/id/'+ response.feedbackTmpl).success(function(response) {
+                $scope.items = response.item;
+                $scope.length = response.item.length - 1;
+                $scope.feedbackModel = response;
+                $scope.max = $scope.length + 1;          
+
+                console.log("feedbackId= " +  $scope.feedbackId );
+                console.log("$scope.positionId = " + $scope.positionId);
+                console.log("$scope.candidateId = " + $scope.candidateId);
+            })             
+         })  
+    }); 
 
     $scope.orderIncrement = function()
     {   
@@ -375,6 +384,365 @@ angular.module('positions')
             //$scope.feedbackModel.answer = answerChoice.toString();
         };
 
-    });
+    })
+
+
+.controller('feedbackController', ['$scope', '$http', '$routeParams','$location','growl','$rootScope','$mdDialog','$timeout','toaster',
+    function($scope, $http, $routeParams, $location, growl, $rootScope, $mdDialog, $timeout, toaster) {
+          $scope.items=[];
+          var id = $routeParams.id;
+          // AUtomatically swap between the edit and new mode to reuse the same frontend form
+          $scope.mode=(id==null? 'add': 'edit');
+          $scope.nameonly= "nameonly";
+          $scope.hideFilter = true;
+          $scope.fbvalid= true;
+            $scope.isSaving=false;
+          if ($rootScope.user.groups.indexOf("vManager") > -1 ) {
+            $scope.isSaving= true; 
+          }
+
+        var refresh = function() {
+            $http.get('/api/v1/secure/feedbackDefs').success(function(response) {
+              $scope.feedbackList = response;
+              $scope.feedbackDefs = "";
+              $scope.items=[];
+              console.log("inside refresh mode = " + $scope.mode);
+
+              switch($scope.mode)    {
+
+                case "add":
+                  $scope.feedbackDefs = "";
+                  break;
+
+                case "edit":
+                  $scope.feedbackDefs = $http.get('/api/v1/secure/feedbackDefs/id/' + id).success(function(response){
+                    var feedbackDefs = response;
+                    $scope.items = feedbackDefs.item;       //list of item
+                    $scope.feedbackDefs = feedbackDefs;     //whole form object
+                    if ($scope.items.length == 0)
+                    {
+                      $scope.fbvalid= true;
+
+                    }
+                    else{
+                      $scope.fbvalid= false;
+
+                    }
+                  });
+
+              } // switch scope.mode ends
+            }); // get feedback call back ends
+      }; // refresh method ends
+
+      refresh();
+
+      $scope.save = function(){
+        //$scope.feedbackDefs.createBy = $rootScope.user._id;
+        switch($scope.mode)    {
+
+          case "add":
+            $scope.create();
+            break;
+
+          case "edit":
+            $scope.update();
+            break;
+          } // end of switch scope.mode ends
+
+          $location.path("/feedbackTmpl/list");
+      } // end of save method
+
+
+      $scope.create = function() {
+            console.log("$scope.feedbackDefs" + $scope.feedbackDefs);
+            console.log("$scope.items" + $scope.items);
+            console.log(" $scope.feedbackList.length = " +  $scope.feedbackList.length);
+            var inData = $scope.feedbackDefs;
+            inData.item = $scope.items;
+            inData.createdBy = $rootScope.user._id;
+          
+            /*console.log("inData.item = " + inData.item);
+            console.log("inData.item.mode = " + inData.item.mode);
+            console.log("inData.item.choices = " + inData.item.choices);
+            console.log("inData.item.query = " + inData.item.query);
+            console.log("inData.createdBy = " + inData.item.createdBy);*/
+          
+            $http.post('/api/v1/secure/feedbackDefs', inData).success(function(response) {
+              refresh();
+              growl.info(parse("Feedback Definition [%s]<br/>Added successfully", inData.title));
+            })
+            .error(function(data, status){
+              growl.error("Error adding Feedback Definition");
+            }); // http post feedback ends
+      }; // create method ends
+
+      $scope.delete = function(feedback) {
+            var title = feedback.title;
+            $http.delete('/api/v1/secure/feedbackDefs/' + feedback._id).success(function(response) {
+              refresh();
+             // growl.info(parse("Feedback [%s]<br/>Deleted successfully", title));
+            })
+            .error(function(data, status){
+             // growl.error("Error deleting feedback");
+            }); // http delete feedback ends
+      }; // delete method ends
+
+      $scope.copy = function(feedback) {
+            delete feedback._id;
+            var title = "Copy of " + feedback.title;
+            feedback.title = title;
+            $http.post('/api/v1/secure/feedbackDefs/',feedback).success(function(response) {
+              refresh();
+              //growl.info(parse("Template [%s]<br/>Copied successfully", title));
+            })
+            .error(function(data, status){
+              //growl.error("Error Copying Template");
+            });
+      };
+
+      $scope.update = function() {
+            $http.put('/api/v1/secure/feedbackDefs/' + $scope.feedbackDefs._id,  $scope.feedbackDefs).success(function(response) {
+              refresh();
+             // growl.info(parse("Feedback [%s]<br/>Edited successfully", $scope.feedbackDefs.title));
+            })
+            .error(function(data, status){
+              //growl.error("Error updating feedback");
+            }); // http put feedback ends
+      }; // update method ends
+
+      $scope.cancel = function() {
+            $scope.feedbackDefs="";
+            $location.path("feedbackTmpl/list");
+      }
+
+      // feedback item table
+      $scope.addItem=function(item){
+
+            $scope.items.push({
+              query: item.query,
+              mode: item.mode,
+              choices: item.choices
+            });
+
+            if($scope.items.length == 0)
+            {
+              $scope.fbvalid = true;
+            }
+
+            else
+            {
+              $scope.fbvalid = false;
+            }
+            item.query='';
+            item.mode='';
+            item.choices='';
+            $mdDialog.hide();
+      };
+
+      $scope.removeItem = function(index,items){
+            $scope.items.splice(index, 1);
+            if (items.length == 0)
+            {
+             $scope.fbvalid=true;
+
+           }else{
+             $scope.fbvalid=false;
+
+           }
+      };
+
+      $scope.editItem = function(index,item,ev){
+            $scope.item = item;
+            console.log("item = " + item);
+            console.log("item.mode = " + item.mode);
+            console.log("item.choices = " + item.choices);
+            console.log("item.query = " + item.query);
+            $scope.items.splice(index, 1);
+            $mdDialog.show({
+              templateUrl: '/public/m/positions/itemViewDialog.html',
+              scope: $scope.$new(),
+              parent: angular.element(document.body),
+              targetEvent: ev,
+              clickOutsideToClose:false
+            })
+      };
+
+      $scope.addFeedbackItem = function(ev) {
+          console.log("inside addFeedbackItmmmmmmmmmmmmmmmem");
+          $mdDialog.show({
+              templateUrl: '/public/m/positions/itemViewDialog.html',
+              scope: $scope.$new(),
+              parent: angular.element(document.body),
+              targetEvent: ev,
+              clickOutsideToClose:false
+        })
+      };
+
+      $scope.showFeedbackTemp = function(ev,id) {
+            $mdDialog.show({
+              controller: fbackDialog,
+              templateUrl: '/public/m/positions/feedbackViewDialog.html',
+              // scope: $scope.$new(),
+              locals: { feedbackid: id },
+              parent: angular.element(document.body),
+              targetEvent: ev,
+              clickOutsideToClose:false
+            })
+      };
+
+      $scope.hide = function() {
+        $mdDialog.hide();
+      };
+
+      $scope.canceldialog = function(item) {
+            // console.log(item.choices);
+            if(item === undefined || item=== '')
+            {
+              console.log('Hi');
+              $mdDialog.cancel();
+            }
+
+            if(item)
+            {
+              console.log(item);
+              $scope.items.push({
+               query: item.query,
+               mode: item.mode,
+               choices: item.choices
+             });
+
+              if(item.query==undefined || item.mode==undefined || (item.mode=="freetext" && item.choices == undefined) || (item.mode=="star-rating" && item.choices == undefined) || (item.mode=="single-choice" && item.choices == undefined) || (item.mode=="multi-choice" && item.choices == undefined))
+              {
+                $scope.items.splice($scope.items.length - 1, 1);
+                $mdDialog.cancel();
+              }
+              item.query='';
+              item.mode='';
+              item.choices='';
+              $mdDialog.cancel();
+            };
+      }
+      
+      $scope.attach = function(feedbackId){
+          console.log("entered attachhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+          console.log("$routeParams.id = " + $routeParams.id);
+          console.log("feedbackId = " + feedbackId);
+          
+          $http.get('/api/v1/secure/positions/'+$routeParams.id,{
+                cache: true
+            }).success(function(response) {
+                console.log("susscceded in retrieval");
+                $scope.position = response;
+                response.feedbackTmpl = feedbackId;
+                console.log("-id = " + response._id);
+                console.log("response.feedbackTmpl = " + response.feedbackTmpl);
+                $http.put('/api/v1/secure/positions/'+ response._id +'/' + feedbackId,{
+                    cache: true
+                    }).success(function(response) {
+                        toaster.pop({body:"Job Position Added successfully."});
+  			            $timeout(callSubmit,5000);
+                        //$location.path("/positions");                   
+                })                    
+            })
+      }
+      
+      function callSubmit() {
+	    window.history.back();
+	}
+        
+}])
+
+
+'use strict';
+
+var postions = angular.module('positions');
+
+
+ //services and drirectives for ngFloatingLables//
+    var messages = {
+            required: "this field is required",
+            minlength: "min length of @value@ characters",
+            maxlength: "max length of @value@ characters",
+            pattern: "don\'t match the pattern",
+            "email": "mail address not valid",
+            "number": "insert only numbers",
+            "custom": "custom not valid type \"@value@\"",
+            "async": "async not valid type \"@value@\""
+    }
+
+    postions.directive('customValidator', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                ngModel.$validators.custom = function (value) {
+                    return value === "foo";
+                };
+            }
+        };
+    })
+
+    postions.service('$fakeValidationService', ['$q', function ($q) {
+        return {
+            "get": function (value) {
+                var deferred = $q.defer();
+
+                setTimeout(function () {
+                    if (value === "bar") {
+                        deferred.resolve({valid: true});
+                    } else {
+                        deferred.reject({valid: false});
+                    }
+                }, 3000);
+
+                return deferred.promise;
+            }
+        }
+    }])
+
+    postions.directive('asyncValidator', ['$fakeValidationService', '$q', function ($fakeValidationService, $q) {
+        return {
+            require: 'ngModel',
+            link: function ($scope, element, attrs, ngModel) {
+                ngModel.$asyncValidators.async = function (modelValue, viewValue) {
+                    var value = modelValue || viewValue;
+                    if(value.length){
+                        element.before('<i class="icon-spin icon-refresh"></i>').parent().addClass('spinner');
+
+                        return $fakeValidationService.get(value).then(function(response) {
+                            element.parent().removeClass('spinner').find('i').remove();
+                            return true;
+                        }, function(response) {
+                            element.parent().removeClass('spinner').find('i').remove();
+                            if (!response.valid) {
+                                return $q.reject();
+                            }
+                        });
+                    }
+                };
+            }
+        }
+    }])
+
+    function fbackDialog($scope, $mdDialog,$http,feedbackid) {
+          $scope.feedback_id = feedbackid;
+          $scope.visit_id = "a01234567892345678900001";
+          $scope.hide = function() {
+            $mdDialog.hide();
+          };
+          $scope.cancel = function() {
+            $mdDialog.cancel();
+          };
+          $scope.answer = function(answer) {
+            $mdDialog.hide(answer);
+          };
+    }
+/*.config(['growlProvider', function(growlProvider) {
+    growlProvider.globalReversedOrder(true);
+    growlProvider.globalTimeToLive({success: 1000, error: 2000, warning: 3000, info: 4000});
+    growlProvider.globalDisableCountDown(true);
+    growlProvider.globalPosition('top-center');
+}]);*/
+
+
 
 
