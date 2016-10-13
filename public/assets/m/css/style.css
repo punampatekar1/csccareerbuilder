@@ -13,9 +13,9 @@ a:hover {
 }
 
 div#profile-details {
-  padding-top: 60px;
-  background: url("../img/bg/headerbg.png") repeat;
-  background-color: #800080;
+  padding-top: 10px;
+  /*background: url("../img/bg/headerbg.png") repeat;*/
+  background-color:  #4d4dff;
   margin-bottom: 10px;
   font-size: 20px;
   color: #FFF;
