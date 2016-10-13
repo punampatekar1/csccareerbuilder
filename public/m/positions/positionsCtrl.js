@@ -11,7 +11,7 @@ angular.module('positions')
 	});
 })*/
 
-.controller('positionsCtrl', ['$scope', '$routeParams', '$http', '$location','$timeout','toaster', function($scope, $routeParams, $http, $location, $timeout, toaster){
+.controller('positionsCtrl', ['$scope', '$routeParams', '$http', '$location', 'Upload', '$timeout', 'toaster', function($scope, $routeParams, $http, $location, Upload, $timeout, toaster){
 
 	console.log("All positions controller running");
 	 var id = $routeParams.id;
@@ -27,6 +27,31 @@ angular.module('positions')
 		//console.log($scope.visitBunches);
 	});
 
+    $scope.uploadFiles = function(file, errFiles) {
+        console.log('positionId '+ $scope.jobPos.positionId);
+        $scope.f = file;
+        $scope.errFile = errFiles && errFiles[0];
+        if (file) {
+            file.upload = Upload.upload({
+                url: '/api/v1/upload/'+$scope.jobPos.positionId,
+                data: {file: file}
+            });
+
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                    $scope.jobDescription = response.data.file.path;
+                    console.log('response.data ' + response.data.file.path);
+                });
+            }, function (response) {
+                if (response.status > 0)
+                    $scope.errorMsg = response.status + ': ' + response.data;
+            }, function (evt) {
+                file.progress = Math.min(100, parseInt(100.0 *
+                evt.loaded / evt.total));
+            });
+        }
+    }
 
 	var refresh = function() {
     $http.get('/api/v1/secure/positions').success(function(response) {
@@ -62,13 +87,11 @@ angular.module('positions')
 
 	$scope.create = function() {
 	    $scope.jobPos.status= "active";
-	    $http.post('/api/v1/secure/positions', $scope.jobPos).success(function(response) {
+        $scope.jobPos.jobDescription= $scope.jobDescription;
+        $http.post('/api/v1/secure/positions', $scope.jobPos).success(function(response) {
 	     toaster.pop({body:"Job Position Added successfully."});
-  			$timeout(callSubmit,5000);
-            $location.path("/positions");
-            refresh();
-
-	    })
+        $location.path("/positions");
+        })
 	    .error(function(data, status){
 	    	console.log('error submitting query '+data+' status '+status);
 	    }); 

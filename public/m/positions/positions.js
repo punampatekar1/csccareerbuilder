@@ -1,5 +1,5 @@
 
-angular.module('positions', ['ngRoute','ngMaterial','angular-growl'])
+angular.module('positions', ['ngRoute','ngMaterial','angular-growl', 'ngFileUpload'])
 
 .run(function ($rootScope, $location, $http) {
 	$http.get('/token')

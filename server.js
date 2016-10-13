@@ -57,9 +57,10 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 //multer for storing images locally and dynamically based on the entity value.
 app.use('/api/v1/upload/:entity',multer({
-  dest: './public/uploads/',
-  rename:function(fieldname,filename){
-    return Date.now() + '.jpg';
+  dest: './public/uploads/jd/',
+  rename:function(fieldname,filename,req){
+    console.log(req.params);
+    return req.params.entity;
   },
   changeDest: function(dest, req, res) {
     console.log(req.params.entity);
