@@ -167,10 +167,6 @@ module.exports = {
 			"/public/libs/ng-file-upload/ng-file-upload.js",
 			"/public/libs/ng-file-upload/ng-file-upload-shim.js"
 			],
-			"prod":[
-			"/public/libs/ng-file-upload/ng-file-upload.min.js",
-			"/public/libs/ng-file-upload/ng-file-upload-shim.min.js"
-			]
 		},
         
         "angular-pdf":{
