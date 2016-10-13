@@ -163,6 +163,7 @@ angular.module('positions')
     }).success(function(response) {
         console.log("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         console.log("response = " + response);
+        $scope.feedbackModel = response;
         $scope.overallFeedbackTmpl = response;
         $scope.positionId = $routeParams.id;
         $scope.feedbackId = $scope.overallFeedbackTmpl.id;
@@ -179,21 +180,32 @@ angular.module('positions')
         };  */     
 
     })
-    .error(function(response){
+   .error(function(response){
         console.log('Feedback not saved. User going to enter feedback');
         
          $http.get('/api/v1/secure/positions/'+ $routeParams.id).success(function(response) {
                 console.log('Retreiving feedbackid from postions collection..');
+                //$scope.feedbackModel = response;
+                $scope.feedbackId = response.feedbackTmpl;
+                $scope.positionId = $routeParams.id;
+                $scope.candidateId = $routeParams.candidateId;
+                $scope.fbid = response.feedbackTmpl;
                 console.log('feedbackid = ' + response.feedbackTmpl);
+                console.log('positionId = ' + $scope.positionId);
+                console.log('candidateId = ' + $scope.candidateId);
+                console.log('fbid = ' + $scope.fbid);
                 $http.get('/api/v1/secure/feedbackDefs/id/'+ response.feedbackTmpl).success(function(response) {
                 $scope.items = response.item;
                 $scope.length = response.item.length - 1;
                 $scope.feedbackModel = response;
+                $scope.feedbackId = response.feedbackTmpl;
+                $scope.positionId = $routeParams.id;
+                $scope.candidateId = $routeParams.candidateId;
+                $scope.fbid = response.feedbackTmpl;
                 $scope.max = $scope.length + 1;          
-
-                console.log("feedbackId= " +  $scope.feedbackId );
-                console.log("$scope.positionId = " + $scope.positionId);
-                console.log("$scope.candidateId = " + $scope.candidateId);
+                console.log('length = ' +  $scope.length );
+                          
+                //$scope.feedbackList = response.item;
             })             
          })  
     }); 
@@ -524,9 +536,11 @@ angular.module('positions')
       };
 
       $scope.update = function() {
-            $http.put('/api/v1/secure/feedbackDefs/' + $scope.feedbackDefs._id,  $scope.feedbackDefs).success(function(response) {
+          console.log ("Inside update function");
+            $http.put('/api/v1/secure/feedbackDefs/' + $scope.feedbackDefs.id,  $scope.feedbackDefs).success(function(response) {
               refresh();
-             // growl.info(parse("Feedback [%s]<br/>Edited successfully", $scope.feedbackDefs.title));
+                toaster.pop({body:"Job Position Added successfully."});
+              growl.info(parse("Feedback [%s]<br/>Edited successfully", $scope.feedbackDefs.title));
             })
             .error(function(data, status){
               //growl.error("Error updating feedback");

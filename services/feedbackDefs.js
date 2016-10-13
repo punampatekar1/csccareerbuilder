@@ -56,6 +56,7 @@ function getOneById(id){
             console.log("feedbackDef._id = " + feedbackDef._id);
 			var feedbackData={
                 id:feedbackDef._id,
+                title:feedbackDef.title,
 				item:feedbackDef.item, 
 				createdBy:feedbackDef.createdBy,
                 createdOn:feedbackDef.createdOn

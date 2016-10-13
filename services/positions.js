@@ -46,7 +46,7 @@ function getAll(){
 function getFeedbackById(id, candidateId){
     console.log ("id = " + id);
     console.log ("candidateId = " + candidateId);
-    var feedbackData = [];
+    var feedbackList = [];
     var deferred = Q.defer();
     model
     .findOne({ positionId: id})
@@ -63,11 +63,11 @@ function getFeedbackById(id, candidateId){
             if (item.feedbackTmpl != null && item.feedbackTmpl.item!= null)
             {
                 for (var i=0; i<item.feedbackTmpl.item.length; i++){
-                    feedbackData.push(transform(item.feedbackTmpl.item[i]));				
+                    feedbackList.push(transform(item.feedbackTmpl.item[i]));				
                 }
             }
 			console.log(item.feedbackTmpl);
-			deferred.resolve(feedbackData);
+			deferred.resolve(feedbackList);
             //deferred.resolve(transform(item.feedbackTmpl));
 	 });
 
