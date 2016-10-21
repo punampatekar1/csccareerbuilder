@@ -23,6 +23,7 @@ service.updateFeedBackId = updateFeedBackId;
 
 service.getCandidatesById = getCandidatesById;
 service.getFeedbackById = getFeedbackById;
+service.updateCandidates = updateCandidates;
 
 module.exports = service;
 
@@ -204,9 +205,7 @@ function updateById(id, data) {
     var deferred = Q.defer();
     console.log("updateById in services ");
     console.log("id = " + id);
-    
-    console.log("data = " + data);
-
+    console.log("data test 11= " + data);
     model.findByIdAndUpdate(id, data, function (err, doc) {
         if (err) {
             deferred.reject(err);
@@ -405,4 +404,23 @@ function getCandidatesById(id){
 		}
 	}
 	return deferred.promise;
+}
+
+function updateCandidates(id, data) {
+    var deferred = Q.defer();
+    console.log("update candidates in services ");
+    console.log("id = " + id);
+    
+    console.log("data = " + data);
+    //var json = JSON.parse(data);
+    model.findByIdAndUpdate(id, {candidate : data}, function (err, doc) {
+        if (err) {
+            deferred.reject(err);
+            system.error({err:err},'Error in candidate Update By Id Api Service');            
+        }
+        else
+            deferred.resolve(doc);
+    });
+
+    return deferred.promise;
 }

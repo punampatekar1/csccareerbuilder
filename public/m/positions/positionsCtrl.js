@@ -86,6 +86,7 @@ angular.module('positions')
 	  } // end of save method
 
 	$scope.create = function() {
+        console.log('create');
 	    $scope.jobPos.status= "active";
         $scope.jobPos.jobDescription= $scope.jobDescription;
         $http.post('/api/v1/secure/positions', $scope.jobPos).success(function(response) {
@@ -128,15 +129,107 @@ angular.module('positions')
 	}
  }]) 
 
-.controller('positionCtrl', function($scope, $routeParams, $http) {
-    console.log($routeParams.id);
-	$http.get('/api/v1/secure/positions/'+$routeParams.id+'/candidates',{
+.controller('positionCtrl', function($scope, $routeParams, $http, $location) {
+    console.log('routeParams '+$routeParams.id);
+    $scope.droppedObjects1 = [];
+    $http.get('/api/v1/secure/positions/'+$routeParams.id+'/candidates',{
 		cache: true
 	}).success(function(response) {
+        console.log('response '+response);
 		$scope.candidateList = response;
+        $scope.droppedObjects1 = response;
         $scope.positionId=$routeParams.id;
-	})
-    
+	});
+
+    $http.get('/api/v1/secure/candidates',{
+        cache: true
+    }).success(function(response) {
+        console.log('candidates '+response);
+        $scope.usersList = response;        
+    });
+
+    $scope.centerAnchor = true;
+    $scope.toggleCenterAnchor = function () {
+        $scope.centerAnchor = !$scope.centerAnchor
+    };
+
+    console.log('droppedObjects1 BEFORE 111'+JSON.stringify($scope.droppedObjects1));
+    $scope.onDropComplete1=function(data,evt){
+        console.log('m on onDropComplete1 '+JSON.stringify(data));
+        var index = $scope.droppedObjects1.indexOf(data);
+        console.log('index '+index);
+        if (index == -1){
+            $scope.droppedObjects1.push(data);
+            console.log('droppedObjects1 BEFORE '+JSON.stringify($scope.droppedObjects1));
+            $http.get('/api/v1/secure/positions/'+$routeParams.id).success(function(response) {
+                var pos_id = response._id;        
+                $http.put('/api/v1/secure/positions/'+pos_id, 
+                    {$push: {"candidate": {candid: data._id}}}).success(function(response) {
+                    console.log('candidates added successfully '+response);
+                })
+                .error(function(data, status){
+                    console.log('error '+data+' status '+status);
+                });
+            });
+        }//index loop end
+        console.log('droppedObjects1 AFTER '+JSON.stringify($scope.droppedObjects1));
+    };
+
+    $scope.deleteAppCandidate = function(candidateId) {
+        console.log('m in delete funct '+candidateId);
+        $http.get('/api/v1/secure/positions/'+$routeParams.id).success(function(response) {
+            var pos_id = response._id;
+            $http.put('/api/v1/secure/positions/'+pos_id,
+                { $pull: { "candidate" : { candid: candidateId } } }).success(function(response) {
+                    console.log('candidates removed successfully '+response);
+                    //$location.path("/positions/"+$routeParams.id+"/addCandi");
+            })
+            .error(function(data, status){
+                console.log('error '+data+' status '+status);
+            });
+        });
+    }; // delete method ends
+
+    $scope.onDragSuccess1=function(data,evt){
+        console.log("133","$scope","onDragSuccess1", "", evt);
+        var index = $scope.candidateList.indexOf(data);
+        if (index > -1) {
+            $scope.candidateList.splice(index, 1);
+        }
+    };
+
+    /*$scope.array = [];
+    var result = "";
+    $scope.addCandidates = function(droppedObjects1){
+        console.log('add candi'+JSON.stringify(droppedObjects1));
+        var dropCandId = '';
+        for(var i=0; i< droppedObjects1.length; i++){
+            console.log('add candi'+ droppedObjects1[i]._id);
+            var dropCandId = droppedObjects1[i]._id;
+            if(i>0){
+               result += ','; 
+            }
+            result += dropCandId;
+            $scope.array.push({
+                'candid':dropCandId,
+            });
+
+        }
+        //var jsonData = angular.toJson($scope.array);
+        console.log('jsonData '+jsonData);
+        
+        var jsonData = {"location":"Hyderabad"};
+        $http.put('/api/v1/secure/positions/'+$routeParams.id+'/set/', jsonData).success(function(response) {    
+            console.log('candidates added successfully');
+        })
+        .error(function(data, status){
+            console.log('error '+data+' status '+status);
+        });
+    };*/
+
+    var inArray = function(array, obj) {
+        var index = array.indexOf(obj);
+    };     
 })
 
 .controller('positionFeedbackCtrlssss', function($scope, $routeParams, $http) { 
