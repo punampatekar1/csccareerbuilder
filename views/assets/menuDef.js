@@ -4,7 +4,7 @@ module.exports = {
 			name: "Home",
 			link: "/m/main/",
 			icon: "fa-home",
-			roles: "customer"
+			roles: "admin,emp"
 		},
 		{
 			name: "Create Position",
@@ -13,8 +13,8 @@ module.exports = {
 			roles: "admin"
 		}, 
         {
-			name: "Create Feedback Template",
-			link: "/m/positions/#/feedbackTmpl/add",
+			name: "Feedback Templates",
+			link: "/m/positions/#/feedbackTmpl/list",
 			icon: "fa-group",
 			roles: "admin"
 		}, 
@@ -22,19 +22,13 @@ module.exports = {
 			name: "Open Positions",
 			link: "/m/positions#/positions",
 			icon: "fa-phone",
-			roles: "user,exec,customer,vManager,admin"
-		},
-		{
-			name: "Feedback",
-			link: "/m/visits/#/feedback",
-			icon: "fa-comments",
-			roles: "exec,customer"
+			roles: "admin,emp"
 		},
 		{
 			name: "Logout",
 			link: "/logout",
 			icon: "fa-sign-out",
-			roles: "user,exec,customer,vManager,admin"
+			roles: "admin,emp"
 		}
 	]
 }

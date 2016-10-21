@@ -9,27 +9,31 @@
 				{
 					"query"							: "Demonstrable relevant Architecture and Solutioning Experience",
 					"mode"							:  "star-rating", 
-					"choices"						: [ ]
+					"choices"						: [ ],
+                    "category"                      : "self"
 						
 				},
 				
 				{
 					"query"							: "Demonstrable Pre-sales or Consulting Experience",
 					"mode"							:  "star-rating",
-					"choices"						: [ ]
+					"choices"						: [ ],
+                    "category"                      : "interviewer"
 				},
 				
             
                 {
 					"query"							: "Experience Communicating to/with High Level Executives",
 					"mode"							:  "single-choice", 
-					"choices"						: [ "Yes","No"]
+					"choices"						: [ "Yes","No"],
+                    "category"                      : "self"
 				},
 				
 				{
 					"query"							: "Comfort in Big 5",
 					"mode"							: "multi-choice",
-					"choices"						: ["Big Data",	"Cloud", "Apps Mod/DevOps","Cyber","Mobile"]
+					"choices"						: ["Big Data",	"Cloud", "Apps Mod/DevOps","Cyber","Mobile"],
+                    "category"                      : "interviewer"
 				}                
 			],
 		

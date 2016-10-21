@@ -190,6 +190,7 @@ module.exports = {
                 "/public/m/positions/positions.js",
                 "/public/m/positions/positionsCtrl.js",
                 "/public/assets/m/css/openpositions.css",
+                "/public/assets/m/css/feedbackadd.css",
                 "/public/assets/m/css/userview.css"                
             ],
             
@@ -197,6 +198,7 @@ module.exports = {
                 "/public/m/positions/positions.js",
                 "/public/m/positions/positionsCtrl.js",
                 "/public/assets/m/css/openpositions.css",
+                "/public/assets/m/css/feedbackadd.css",
                 "/public/assets/m/css/userview.css"               
             ]
         },

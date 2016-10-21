@@ -81,7 +81,8 @@ function getFeedbackById(id, candidateId){
 			var feedbackData={
                 query:feedbackItem.query,
 				mode:feedbackItem.mode, 
-				choices:feedbackItem.choices
+				choices:feedbackItem.choices,
+                category:feedbackItem.category
 			}
 			console.log("******************************");
 			console.log(feedbackData);

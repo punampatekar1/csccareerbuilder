@@ -243,7 +243,9 @@ angular.module('positions')
     
 })
 
-.controller('positionFeedbackCtrl', function($scope, $timeout, $interval, $filter, $location, $routeParams, $http, $rootScope) {
+    
+.controller('positionFeedbackCtrl', ['$scope', '$timeout', '$interval' ,'$filter','$location','$routeParams','$http','$rootScope', 
+                             function($scope, $timeout, $interval, $filter, $location, $routeParams, $http, $rootScope) {
     $scope.order = 0;
     $scope.counter = 0;
     console.log($rootScope.user._id);
@@ -278,28 +280,36 @@ angular.module('positions')
         
          $http.get('/api/v1/secure/positions/'+ $routeParams.id).success(function(response) {
                 console.log('Retreiving feedbackid from postions collection..');
-                //$scope.feedbackModel = response;
-                $scope.feedbackId = response.feedbackTmpl;
-                $scope.positionId = $routeParams.id;
-                $scope.candidateId = $routeParams.candidateId;
-                $scope.fbid = response.feedbackTmpl;
-                console.log('feedbackid = ' + response.feedbackTmpl);
-                console.log('positionId = ' + $scope.positionId);
-                console.log('candidateId = ' + $scope.candidateId);
-                console.log('fbid = ' + $scope.fbid);
-                $http.get('/api/v1/secure/feedbackDefs/id/'+ response.feedbackTmpl).success(function(response) {
-                $scope.items = response.item;
-                $scope.length = response.item.length - 1;
                 $scope.feedbackModel = response;
                 $scope.feedbackId = response.feedbackTmpl;
                 $scope.positionId = $routeParams.id;
                 $scope.candidateId = $routeParams.candidateId;
                 $scope.fbid = response.feedbackTmpl;
-                $scope.max = $scope.length + 1;          
-                console.log('length = ' +  $scope.length );
-                          
-                //$scope.feedbackList = response.item;
-            })             
+                $scope.feedbackList = "";
+                $scope.groupMember = $rootScope.user.groups;
+             console.log("user groups" + $rootScope.user.groups);
+             
+
+                //if user belong to Interviwers group & not to admin group, user will be able to see the feedback belonging to interviewers category only
+                if ($rootScope.user.groups.indexOf("emp") > -1 && $rootScope.user.groups.indexOf("admin") == -1) {
+                    console.log("Entered filter criteria");
+                    $scope.userrole ="interviewer";
+                 }
+                 else 
+                 {
+                     $scope.userrole ="admin";
+                 }
+             
+                $http.get('/api/v1/secure/feedbackDefs/id/'+ response.feedbackTmpl).success(function(response) {
+                    $scope.items = response.item;
+                    $scope.length = response.item.length - 1;                    
+                    $scope.feedbackModel = response;
+                    $scope.feedbackId = response.feedbackTmpl;
+                    $scope.positionId = $routeParams.id;
+                    $scope.candidateId = $routeParams.candidateId;
+                    $scope.fbid = response.feedbackTmpl;
+                    $scope.max = $scope.length + 1;        
+                })             
          })  
     }); 
 
@@ -512,24 +522,24 @@ angular.module('positions')
             //$scope.feedbackModel.answer = answerChoice.toString();
         };
 
-    })
+    }])
 
 
 .controller('feedbackController', ['$scope', '$http', '$routeParams','$location','growl','$rootScope','$mdDialog','$timeout','toaster',
     function($scope, $http, $routeParams, $location, growl, $rootScope, $mdDialog, $timeout, toaster) {
           $scope.items=[];
           var id = $routeParams.id;
+          var filter = {};
+        
           // AUtomatically swap between the edit and new mode to reuse the same frontend form
           $scope.mode=(id==null? 'add': 'edit');
           $scope.nameonly= "nameonly";
           $scope.hideFilter = true;
           $scope.fbvalid= true;
-            $scope.isSaving=false;
-          if ($rootScope.user.groups.indexOf("vManager") > -1 ) {
-            $scope.isSaving= true; 
-          }
-
-        var refresh = function() {
+          $scope.isSaving=false;
+            
+         
+          var refresh = function() {
             $http.get('/api/v1/secure/feedbackDefs').success(function(response) {
               $scope.feedbackList = response;
               $scope.feedbackDefs = "";
@@ -564,12 +574,12 @@ angular.module('positions')
 
       refresh();
 
-      $scope.save = function(){
+      $scope.save = function(category){
         //$scope.feedbackDefs.createBy = $rootScope.user._id;
         switch($scope.mode)    {
 
           case "add":
-            $scope.create();
+            $scope.create(category);
             break;
 
           case "edit":
@@ -581,14 +591,14 @@ angular.module('positions')
       } // end of save method
 
 
-      $scope.create = function() {
+      $scope.create = function(category) {
             console.log("$scope.feedbackDefs" + $scope.feedbackDefs);
             console.log("$scope.items" + $scope.items);
             console.log(" $scope.feedbackList.length = " +  $scope.feedbackList.length);
             var inData = $scope.feedbackDefs;
             inData.item = $scope.items;
             inData.createdBy = $rootScope.user._id;
-          
+            inData.category = $scope.category;
             /*console.log("inData.item = " + inData.item);
             console.log("inData.item.mode = " + inData.item.mode);
             console.log("inData.item.choices = " + inData.item.choices);
@@ -646,12 +656,12 @@ angular.module('positions')
       }
 
       // feedback item table
-      $scope.addItem=function(item){
-
+      $scope.addItem=function(item){                    
             $scope.items.push({
               query: item.query,
               mode: item.mode,
-              choices: item.choices
+              choices: item.choices,
+              category: $scope.category
             });
 
             if($scope.items.length == 0)
@@ -682,13 +692,15 @@ angular.module('positions')
       };
 
       $scope.editItem = function(index,item,ev){
-            $scope.item = item;
-            console.log("item = " + item);
-            console.log("item.mode = " + item.mode);
-            console.log("item.choices = " + item.choices);
-            console.log("item.query = " + item.query);
-            $scope.items.splice(index, 1);
-            $mdDialog.show({
+          $scope.item = item;
+          console.log("item = " + item);
+          console.log("item.mode = " + item.mode);
+          console.log("item.choices = " + item.choices);
+          console.log("item.query = " + item.query);
+          console.log("item.category = " + item.category);
+          $scope.category = item.category;
+          $scope.items.splice(index, 1);
+          $mdDialog.show({
               templateUrl: '/public/m/positions/itemViewDialog.html',
               scope: $scope.$new(),
               parent: angular.element(document.body),
@@ -697,8 +709,10 @@ angular.module('positions')
             })
       };
 
-      $scope.addFeedbackItem = function(ev) {
+      $scope.addFeedbackItem = function(ev, category) {
           console.log("inside addFeedbackItmmmmmmmmmmmmmmmem");
+          console.log("category = " + category);
+          $scope.category = category;
           $mdDialog.show({
               templateUrl: '/public/m/positions/itemViewDialog.html',
               scope: $scope.$new(),

@@ -20,6 +20,9 @@ var constants			= require('./scripts/constants');
 var config        = require(constants.paths.config + '/config');
 var multer = require('multer');
 
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
 // configuration ===============================================================
 require('./scripts/database'); // load database management scripts
 require('./scripts/process'); // load process management scripts
@@ -97,3 +100,16 @@ var appInfoServ = require('./services/appService');
 var appInfo = appInfoServ.info();
 console.log(colors.blue(util.formatString("\nApplication: %s ver %s:%s", appInfo.name, appInfo.version, appInfo.gitHash )));
 console.log(colors.blue(util.formatString('   running at port %s', port)));
+
+
+io.on('connection', function(socket){
+    console.log ("we have a connection");
+    socket.on("new-message", function(msg){
+        console.log(msg);
+        io.emit("receive-message", msg);
+    })
+});
+
+http.listen('3000', function(){
+    console.log("we are connected");
+});
