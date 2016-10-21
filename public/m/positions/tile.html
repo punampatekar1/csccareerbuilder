@@ -45,7 +45,6 @@
 
 
 <div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="OPEN POSITIONS" query='query' ></div>
-<div ng-include src="'/public/mods/jobs/search/searchForm.html'"></div>
 
 <div class="container">
   <div class="row searchWrapper">
@@ -64,8 +63,9 @@
         <div class="itemWrapper">
           <ul>
             <li class="col-sm-12 jItem" ng-repeat="position in positionList | filter: search |orderBy:orderByField:reverseSort">
-
                     <p class="pull-right">
+                      <a href="#/positions/{{position.positionId}}/addCandi"><i class="fa fa-user-plus" aria-hidden="true" style="color:#800080;"></i></a>
+
                       <a href="#/positions/{{position.positionId}}/edit"><span class="fa fa-pencil-square-o" style="color:#800080;"/></a>
 
                       <a class="table-btn" ng-click="delete(position._id)" confirm-dialog header-text="Delete job Description" content="Are you sure you want to delete the job description? </b>" 

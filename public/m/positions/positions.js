@@ -1,5 +1,5 @@
 
-angular.module('positions', ['ngRoute','ngMaterial','angular-growl', 'ngFileUpload'])
+angular.module('positions', ['ngRoute','ngMaterial','angular-growl', 'ngFileUpload', '720kb.datepicker', 'ngDraggable'])
 
 .run(function ($rootScope, $location, $http) {
 	$http.get('/token')
@@ -69,6 +69,11 @@ angular.module('positions', ['ngRoute','ngMaterial','angular-growl', 'ngFileUplo
     .when('/feedbackTmpl/panels', {
         templateUrl: '/public/m/positions/partials/feedbackViewPanels.html',
         controller: 'feedbackController'
+    })
+
+    .when('/positions/:id/addCandi', {
+        templateUrl: '/public/m/positions/addCandidates.html',
+        controller: 'positionCtrl'
     });
   
   // if none of the above states are matched, use this as the fallback

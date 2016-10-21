@@ -15,6 +15,7 @@ controller.updateFeedBackId = updateFeedBackId;
 controller.deleteById = deleteById;
 controller.getFeedbackById = getFeedbackById;
 controller.getCandidatesById = getCandidatesById;
+controller.updateCandidates = updateCandidates;
 
 module.exports = controller;
 
@@ -124,6 +125,17 @@ function getCandidatesById (req,res){
     })
     .catch(function (err){
         console.log("exception" + err);
+        res.status(500).send(err);
+    });
+}
+
+function updateCandidates(req, res) {
+  dataService.updateCandidates(req.params.id, req.body)
+    .then(function () {
+        res.status(200).send("Doc updated successfully");
+    })
+    .catch(function (err) {
+        console.log(err);
         res.status(500).send(err);
     });
 }

@@ -24,7 +24,7 @@
     "angular-messages": "latest",
     "angular-material": "1.0.6",
     "angular-ui": "0.4.0",
-    "moment":"2.12.0",
+    "moment": "2.12.0",
     "moment-range": "2.2.0",
     "html5-boilerplate": "~5.2.0",
     "font-awesome": "latest",
@@ -34,11 +34,12 @@
     "angular-bootstrap": "latest",
     "angular-touch": "latest",
     "angular-ui-grid": "latest",
-    "angularjs-datepicker": "latest",
+    "angularjs-datepicker": "^2.1.6",
     "angular-growl-v2": "0.7.9",
     "ng-file-upload": "11.0.0",
-    "ngImgCropFullExtended": "0.5.4"
-},
+    "ngImgCropFullExtended": "0.5.4",
+    "ngDraggable": "0.1.10"
+  },
   "resolutions": {
     "angular": "~1.5.0",
     "rdash-ui": "latest",

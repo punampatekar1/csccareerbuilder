@@ -8,7 +8,7 @@ var users 						= require(constants.paths.controllers + '/api/users');
 var fileupload					= require(constants.paths.controllers + '/api/fileupload');
 var groups					    = require(constants.paths.controllers + '/api/groups');
 var positions                   = require(constants.paths.controllers + '/api/positions');
-//var candidates                = require(constants.paths.controllers + '/api/positions');
+var candidates                = require(constants.paths.controllers + '/api/candidates');
 var feedbackDef 			    = require(constants.paths.controllers + '/api/feedbackDefs');
 var feedbacks				    = require(constants.paths.controllers + '/api/feedbacks');
 
@@ -46,7 +46,9 @@ router.get('/api/v1/secure/positions/:id', positions.getOneById);
 router.post('/api/v1/secure/positions', positions.create);
 router.put('/api/v1/secure/positions/:id', positions.updateById);
 router.put('/api/v1/secure/positions/:id/:feedbackId', positions.updateFeedBackId);
-router.delete('/api/v1/secure/positions/:id', positions.deleteById); 
+router.delete('/api/v1/secure/positions/:id', positions.deleteById);
+//router.delete('/api/v1/secure/positions/:id', positions.deleteById);
+//router.put('/api/v1/secure/positions/addcandidates/:id/:candidate', positions.updateCandidates);
 
 // List of service routes for feedbackDefs
 router.get('/api/v1/secure/feedbackDefs/id/:id', feedbackDef.getOneById);
@@ -63,5 +65,8 @@ router.get('/api/v1/secure/feedbacks/:id/:candidateId/:interviewerId', feedbacks
 router.post('/api/v1/secure/feedbacks', feedbacks.create);
 router.put('/api/v1/secure/feedbacks/:id', feedbacks.updateById);
 router.delete('/api/v1/secure/feedbacks/:id', feedbacks.deleteById);
+
+// List of service routes for candidates
+router.get('/api/v1/secure/candidates', candidates.getAll);
 
 module.exports = router;

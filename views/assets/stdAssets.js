@@ -238,6 +238,24 @@ module.exports = {
 			"/public/libs/moment/moment.min.js",
 			"/public/libs/moment-range/dist/moment-range.min.js"
 			]
+		},
+
+		"angular-calendar": {
+			"cdn": [
+			],
+			"dev":[
+			"/public/libs/angularjs-datepicker/src/css/angular-datepicker.css",
+			"/public/libs/angularjs-datepicker/src/js/angular-datepicker.js"
+			],
+			"prod":[
+			]
+		},
+
+		"angular-draggable":{
+			"cdn":[],
+			"dev":[
+			"/public/libs/ngDraggable/ngDraggable.js"
+			]
 		}
 
 	}
