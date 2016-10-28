@@ -1,6 +1,9 @@
-
-
-<div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="CREATE JOB POSITION" query='query' >
+<div ng-if="mode=='add'">
+<div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="CREATE JOB POSITION" query='query' > </div>
+ </div>
+<div ng-if="mode=='edit'">
+    <div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="EDIT JOB POSITION" query='query' > </div>
+</div>
 <!--  <div class="searchViewHead col-xs-12">
         <div class="searchDivHead col-xs-12 col-sm-8 col-md-10 div-padding">
 
@@ -8,7 +11,7 @@
 
         </div>
     </div> !-->
-</div>
+
 <div ng-controller="positionsCtrl">
  
  <div ng-if="mode=='add'" class="page-header">
@@ -17,7 +20,7 @@
    </div>
 
    <div ng-if="mode=='edit'" class="page-header">
-      <div class="sub-header">Edit Job Description -{{jobPos.jobTitle}}
+      <div class="sub-header">Edit Job Description - {{jobPos.jobTitle}}
     </div>
   </div>
       
@@ -44,22 +47,27 @@
          <div class="form-group">
             <label class="control-label col-sm-2" for="location">Valid Till</label>
             <div class="col-md-6 col-sm-2">
-               <datepicker date-format="yyyy-MM-dd">
-                  <input ng-model="date" type="text"/>
-                </datepicker>
+               <!--<datepicker date-format="MM-dd-yyyy">-->
+                 <div ng-if="mode=='add'">
+                  <input ng-model="jobPos.validTill" type="date"/>
+                </div>
+                <div ng-if="mode=='edit'">
+                    <input ng-model="jobPos.validTill" type="text"/>
+                </div>
+            <!--</datepicker>-->
+            <!--</datepicker>-->
             </div>
          </div>
          <div class="form-group">
              <label class="control-label col-sm-2" for="fileAttach">Job Des File</label>
               <div class="col-md-6 col-sm-2">
-                <button type="file" ngf-select="uploadFiles($file)"
-                  accept="'application/pdf'">
+                <button type="file" class="btn btn-primary" ngf-select="uploadFiles($file)"
+                  accept="'application/pdf'" class="jobDesUploadBtn">
                   Select File</button>
-                  <div ng-if="mode=='edit'">
-                    <h5>OLD JD -<a target="_blank" href="/public/uploads/jd/{{jobPos.jobDescription}}">{{jobPos.positionId}}</a></h5>
+                  <div ng-if="mode=='edit'" >
+                    <h5><a target="_blank" href="/public/uploads/jd/{{jobPos.positionId}}.pdf">{{jobPos.positionId}}.pdf</a></h5>
                   </div>
 
-                <input type="hidden" class="form-control" name="Price" ng-init="Price=jobDescription;" ng-value="Price"/>
                 <br><br>
                 <span>File:</span>
                 <div>{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}

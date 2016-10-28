@@ -1,0 +1,31 @@
+<div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="Change Page Theme" query='query'></div>
+
+
+<div style="border:1px solid #CCC; padding:5px;">
+  <form class="form-horizontal" role="form" name="styleForm" id="styleForm">
+    <div class="form-group">
+      <label class="control-label col-md-2 col-sm-4 col-xs-8" for="vertical">Add Page BG Color</label>
+      <div class="col-md-2 col-sm-2 col-xs-6">
+        <input type="color" id="bodyBGColor" name="bodyBGColor" ng-model="user.bodyBGColor">
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-6">
+          <button type="submit" class="btn btn-primary" ng-click="saveColor()">Save Color</button>
+      </div>
+    </div>
+     
+    
+    <div class="form-group">
+      <label class="control-label col-md-2 col-sm-4 col-xs-8" for="vertical">Pick Your theme</label>
+      <div class="col-md-2 col-sm-2 col-xs-6">
+        <select name="type" ng-model="user.bodyBGImg" ng-dropdown>
+            <option ng-option value="/public/uploads/1469620962505.jpg"> Bubbles Theme</option>
+
+            <option ng-option value="/public/uploads/1469620962505.jpg"> Rainbow Theme</option>
+        </select>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-6">
+          <button type="submit" class="btn btn-primary" ng-click="saveBgImage()">Save Theme</button>
+      </div>   
+    </div>
+  </form>
+</div>

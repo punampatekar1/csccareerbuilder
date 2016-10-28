@@ -18,10 +18,22 @@ module.exports = {
 			icon: "fa-group",
 			roles: "admin"
 		}, 
+        {
+			name: "Chat",
+			link: "/m/positions/#/chat",
+			icon: "fa-wechat",
+			roles: "admin,emp"
+		}, 
   		{
 			name: "Open Positions",
 			link: "/m/positions#/positions",
 			icon: "fa-phone",
+			roles: "admin,emp"
+		},
+        {
+			name: "Charts",
+			link: "/m/positions/#/chart",
+			icon: "fa-chart",
 			roles: "admin,emp"
 		},
 		{

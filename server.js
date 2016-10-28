@@ -20,9 +20,6 @@ var constants			= require('./scripts/constants');
 var config        = require(constants.paths.config + '/config');
 var multer = require('multer');
 
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-
 // configuration ===============================================================
 require('./scripts/database'); // load database management scripts
 require('./scripts/process'); // load process management scripts
@@ -92,7 +89,7 @@ onFileUploadComplete: function(file) {
 require('./routes/main')(app, passport);
 
 // launch ======================================================================
-app.listen(port);
+//app.listen(port);
 
 var util = require('./scripts/util');
 var appInfoServ = require('./services/appService');
@@ -102,14 +99,23 @@ console.log(colors.blue(util.formatString("\nApplication: %s ver %s:%s", appInfo
 console.log(colors.blue(util.formatString('   running at port %s', port)));
 
 
-io.on('connection', function(socket){
-    console.log ("we have a connection");
-    socket.on("new-message", function(msg){
-        console.log(msg);
-        io.emit("receive-message", msg);
-    })
+var http = require('http').Server(app);
+var io = require('socket.io').listen(http);
+
+
+io.sockets.on('connection', function(socket){
+    console.log ("Client connection");
+    
+    socket.on("send message", function(data){
+       io.sockets.emit("new message", data);
+    });
 });
 
-http.listen('3000', function(){
-    console.log("we are connected");
+http.listen('8080', function(){
+    console.log("Listening on port 8080 njaannanannannanan");    
+       
 });
+
+app.use(express.static(__dirname +'/public'));;
+
+app.use(express.static(__dirname +'/bower_components'));

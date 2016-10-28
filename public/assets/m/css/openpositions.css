@@ -26,6 +26,19 @@
   padding: 5px;
   border-radius: 10px;
 }
+
+.jobDesUploadBtn{
+    width: 120px;
+    outline: 0px;
+    /*background: rgba(176, 203, 243, 0.6) none repeat scroll 0% 0%;*/
+    margin: 0px 5px 5px;
+    padding: 10px 20px;
+    color: #FFF;
+    background-color: #337AB7;
+    border-color: #2E6DA4;
+    border-radius: 6px;
+}
+
 /*** added for open Position styling ****/
 
 .dropdown-menu{

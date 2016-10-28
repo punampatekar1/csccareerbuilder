@@ -11,7 +11,36 @@ angular.module('positions')
 	});
 })*/
 
-.controller('positionsCtrl', ['$scope', '$routeParams', '$http', '$location', 'Upload', '$timeout', 'toaster', function($scope, $routeParams, $http, $location, Upload, $timeout, toaster){
+.directive('exportToCsv',function(){
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var el = element[0];
+            element.bind('click', function(e){
+                var table = e.target.nextElementSibling;
+                var csvString = '';
+                for(var i=0; i<table.rows.length;i++){
+                    var rowData = table.rows[i].cells;
+                    for(var j=0; j<rowData.length;j++){
+                        csvString = csvString + rowData[j].innerHTML + ",";
+                    }
+                    csvString = csvString.substring(0,csvString.length - 1);
+                    csvString = csvString + "\n";
+                }
+                csvString = csvString.substring(0, csvString.length - 1);
+                var a = $('<a/>', {
+                    style:'display:none',
+                    href:'data:application/octet-stream;base64,'+btoa(csvString),
+                    download:'JobReport.csv'
+                }).appendTo('body')
+                a[0].click()
+                a.remove();
+            });
+        }
+    }
+}) 
+
+.controller('positionsCtrl', ['$scope', '$routeParams', '$http', '$location', 'Upload', '$timeout', 'toaster', '$rootScope', function($scope, $routeParams, $http, $location, Upload, $timeout, toaster, $rootScope ){
 
 	console.log("All positions controller running");
 	 var id = $routeParams.id;
@@ -27,6 +56,31 @@ angular.module('positions')
 		//console.log($scope.visitBunches);
 	});
 
+    $scope.saveColor = function() {
+        console.log('save color'+$scope.user.bodyBGColor);
+        $("body, #sb-wrapper, .sidebar-item").css("background-color", $scope.user.bodyBGColor);
+        $scope.user.theme= $scope.user.bodyBGColor;
+        $http.put('/api/v1/secure/admin/users/' + $rootScope.user._id, $scope.user).success(function(response) {
+          console.log('updaing save color');
+        });       
+    }
+
+    $scope.saveBgImage = function() {
+        console.log('save color'+$scope.user.bodyBGImg);
+        $("body, #sb-wrapper, .sidebar-item").css("background-image", "url("+$scope.user.bodyBGImg+")");
+        $scope.user.theme= $scope.user.bodyBGImg;
+        $http.put('/api/v1/secure/admin/users/' + $rootScope.user._id, $scope.user).success(function(response) {
+          console.log('updaing save color');
+        });       
+    }
+
+    $scope.exportToExcel=function(tableId){ 
+        var exportHref=Excel.tableToExcel(tableId,'sheet name');
+        //$timeout(function(){location.href=$scope.fileData.exportHref;},100); // trigger download
+        console.log('exportHref '+exportHref);
+        $timeout(function(){location.href=exportHref;},100); // trigger download
+    } 
+    
     $scope.uploadFiles = function(file, errFiles) {
         console.log('positionId '+ $scope.jobPos.positionId);
         $scope.f = file;
@@ -90,7 +144,7 @@ angular.module('positions')
 	    $scope.jobPos.status= "active";
         $scope.jobPos.jobDescription= $scope.jobDescription;
         $http.post('/api/v1/secure/positions', $scope.jobPos).success(function(response) {
-	     toaster.pop({body:"Job Position Added successfully."});
+	    toaster.pop({body:"Job Position Added successfully."});
         $location.path("/positions");
         })
 	    .error(function(data, status){
@@ -101,6 +155,7 @@ angular.module('positions')
 	  $scope.update = function() {
 	    $http.put('/api/v1/secure/positions/' + $scope.jobPos._id, $scope.jobPos).success(function(response) {
 	      toaster.pop({body:"Job Position updated successfully."});
+          //if("/api/v1/upload/"+$scope.jobPos.positionId+"".pdf"")
   		  $location.path("/positions");
           refresh();
 
@@ -129,17 +184,20 @@ angular.module('positions')
 	}
  }]) 
 
-.controller('positionCtrl', function($scope, $routeParams, $http, $location) {
+.controller('positionCtrl', ['$scope', '$routeParams', '$http', '$location', '$timeout', '$route', function($scope, $routeParams, $http, $location, $timeout, $route) {
     console.log('routeParams '+$routeParams.id);
     $scope.droppedObjects1 = [];
-    $http.get('/api/v1/secure/positions/'+$routeParams.id+'/candidates',{
-		cache: true
-	}).success(function(response) {
-        console.log('response '+response);
-		$scope.candidateList = response;
-        $scope.droppedObjects1 = response;
-        $scope.positionId=$routeParams.id;
-	});
+    var refreshPosByCandi = function() {
+        $http.get('/api/v1/secure/positions/'+$routeParams.id+'/candidates',{
+           cache: false
+        }).success(function(response) {
+            console.log('response '+response);
+            $scope.candidateList = response;
+            $scope.droppedObjects1 = response;
+            $scope.positionId=$routeParams.id;
+        });
+    }
+    refreshPosByCandi();
 
     $http.get('/api/v1/secure/candidates',{
         cache: true
@@ -153,19 +211,42 @@ angular.module('positions')
         $scope.centerAnchor = !$scope.centerAnchor
     };
 
-    console.log('droppedObjects1 BEFORE 111'+JSON.stringify($scope.droppedObjects1));
+
+    $scope.inArrayOfObjects=function(myArray,myValue,objElement){
+        var inArray = false;
+        myArray.map(function(arrayObj){
+            if (arrayObj['_id'] === myValue || arrayObj['id'] === myValue) {
+                console.log("eneterd");
+                inArray=true;
+            }
+        });
+        return inArray;
+    };
+    
+    $scope.removeObjectFromObjectArray=function(myArray,myValue){
+         for (var n = 0 ; n < myArray.length ; n++) {
+            if (myArray[n].id == myValue || myArray[n]._id == myValue) {
+              var removedObject = myArray.splice(n,1);
+              removedObject = null;
+              break;
+            }
+         }
+        return  myArray;
+    }
+
     $scope.onDropComplete1=function(data,evt){
-        console.log('m on onDropComplete1 '+JSON.stringify(data));
-        var index = $scope.droppedObjects1.indexOf(data);
-        console.log('index '+index);
-        if (index == -1){
+        var exists = false;
+        
+        exists = $scope.inArrayOfObjects($scope.droppedObjects1, data._id, '_id');
+        //{$push: {"candidate": {candid: data._id}}}).success(function(response) {
+        if (!exists){
             $scope.droppedObjects1.push(data);
-            console.log('droppedObjects1 BEFORE '+JSON.stringify($scope.droppedObjects1));
             $http.get('/api/v1/secure/positions/'+$routeParams.id).success(function(response) {
-                var pos_id = response._id;        
-                $http.put('/api/v1/secure/positions/'+pos_id, 
-                    {$push: {"candidate": {candid: data._id}}}).success(function(response) {
-                    console.log('candidates added successfully '+response);
+                var pos_id = response._id;  
+                console.log('data......._iddddd = ' + data._id);
+                $http.put('/api/v1/secure/positions/'+pos_id,                      
+                       {$push: {candidate:{$each: [{ candid: data._id }]}}}).success(function(response) {
+                    console.log('candidates added successfully '+response);                     
                 })
                 .error(function(data, status){
                     console.log('error '+data+' status '+status);
@@ -182,7 +263,7 @@ angular.module('positions')
             $http.put('/api/v1/secure/positions/'+pos_id,
                 { $pull: { "candidate" : { candid: candidateId } } }).success(function(response) {
                     console.log('candidates removed successfully '+response);
-                    //$location.path("/positions/"+$routeParams.id+"/addCandi");
+                    $scope.droppedObjects1 =  $scope.removeObjectFromObjectArray( $scope.droppedObjects1, candidateId);               
             })
             .error(function(data, status){
                 console.log('error '+data+' status '+status);
@@ -191,10 +272,9 @@ angular.module('positions')
     }; // delete method ends
 
     $scope.onDragSuccess1=function(data,evt){
-        console.log("133","$scope","onDragSuccess1", "", evt);
-        var index = $scope.candidateList.indexOf(data);
+        var index = $scope.droppedObjects1.indexOf(data);
         if (index > -1) {
-            $scope.candidateList.splice(index, 1);
+            $scope.droppedObjects1.splice(index, 1);
         }
     };
 
@@ -230,7 +310,7 @@ angular.module('positions')
     var inArray = function(array, obj) {
         var index = array.indexOf(obj);
     };     
-})
+ }])
 
 .controller('positionFeedbackCtrlssss', function($scope, $routeParams, $http) { 
     console.log($routeParams.id);
@@ -242,6 +322,43 @@ angular.module('positions')
 	})
     
 })
+
+ .controller('chatCtrl', ['$rootScope', '$scope', '$filter', function($rootScope, $scope, $filter){
+        var socket = io.connect();
+        var messages=[];
+        var date = new Date();
+         
+        $scope.HHmmss = 
+         
+        $scope.loggedinuser = $rootScope.user.name.first;
+        
+        socket.on("new message", function(newtext){            
+            $scope.$apply(function(){
+                console.log("received message");
+                messages.push(newtext);
+                $scope.messages = messages;
+            });
+        });
+
+        $scope.sendMessage = function(msg){ 
+             var newMessage = {
+                username:$rootScope.user.name.first,
+                message:msg,
+                textedTime:$filter('date')(new Date(), 'hh:mm a')
+            };
+            socket.emit("send message", newMessage);  
+            $scope.textMessage ="";            
+        };
+
+       $scope.$watch(function(){
+            return messages;
+        }, function(){
+            if(messages){
+                console.log("This is the value for username", messages);
+            }
+        })   
+
+    }])
 
     
 .controller('positionFeedbackCtrl', ['$scope', '$timeout', '$interval' ,'$filter','$location','$routeParams','$http','$rootScope', 

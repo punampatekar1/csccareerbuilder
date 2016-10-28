@@ -18,6 +18,7 @@ var positionSchema = new mongoose.Schema({
         jobDescription                : String,
 	    feedbackTmpl				  : {type: Schema.Types.ObjectId, ref: 'feedbackDefs'},
         candidate		              : [{
+             _id                      : false,
             candid      	          : {type: Schema.Types.ObjectId, ref: 'candidates'}           
         }]
 	});
