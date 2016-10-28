@@ -14,3 +14,4 @@ angular.module('mappXL-positions', [
 	'appFilters',
 	'feedback','feedbackDirective','ngRateIt','header','scroll','confirmDialogDirective'
 ]);*/
+

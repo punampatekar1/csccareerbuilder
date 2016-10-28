@@ -1,5 +1,5 @@
 
-angular.module('positions', ['ngRoute','ngMaterial','angular-growl', 'ngFileUpload', '720kb.datepicker', 'ngDraggable'])
+angular.module('positions', ['ngRoute','ngMaterial','angular-growl', 'ngFileUpload', '720kb.datepicker', 'ngDraggable', 'ngAnimate'])
 
 .run(function ($rootScope, $location, $http) {
 	$http.get('/token')
@@ -70,6 +70,25 @@ angular.module('positions', ['ngRoute','ngMaterial','angular-growl', 'ngFileUplo
         templateUrl: '/public/m/positions/partials/feedbackViewPanels.html',
         controller: 'feedbackController'
     })
+
+    .when('/chat', {
+        templateUrl: '/public/m/chat/index.html',
+        controller: 'chatCtrl'
+    })
+  
+   .when('/chart', {
+        templateUrl:'/public/m/chart/barChart.html'
+    })
+  
+   .when('/changeTheme', {
+        templateUrl: '/public/m/positions/changeTheme.html',
+        controller: 'positionsCtrl'
+    })
+
+    .when('/positions/tables', {
+        templateUrl: '/public/m/positions/grid.html',
+        controller: 'positionsCtrl'
+    }) 
 
     .when('/positions/:id/addCandi', {
         templateUrl: '/public/m/positions/addCandidates.html',

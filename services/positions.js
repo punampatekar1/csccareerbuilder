@@ -1,5 +1,6 @@
 var Q = require('q');
 var _ = require('underscore');
+var moment 			  = require('moment');  require('moment-range');
 var path              = require('path');
 
 var constants         = require('../scripts/constants');
@@ -7,6 +8,7 @@ var constants         = require('../scripts/constants');
 var model             = require(constants.paths.models +  '/positions')
 var config            = require(path.join(constants.paths.config, '/config'));
 var system            = require(constants.paths.scripts + "/system");
+
 
 // Service method definition -- Begin
 var service = {};
@@ -81,7 +83,8 @@ function getFeedbackById(id, candidateId){
 			var feedbackData={
                 query:feedbackItem.query,
 				mode:feedbackItem.mode, 
-				choices:feedbackItem.choices
+				choices:feedbackItem.choices,
+                category:feedbackItem.category
 			}
 			console.log("******************************");
 			console.log(feedbackData);
@@ -135,8 +138,29 @@ function getOneById(id){
             deferred.reject(err);
         }
         else{
-          deferred.resolve(item);
+          deferred.resolve(transform(item));
       }
+        
+    function transform(position) {
+        if (position==null) {
+            console.log("error in adding");
+        }
+        else{
+            var positionData={
+                _id:position._id,
+              positionId : position.positionId,
+		      jobTitle  : position.jobTitle,
+              location : position.jobTitle,
+		      requestor  :  position.requestor,           
+    		  status : position.status,                   		
+		      jobDescription : position.jobDescription,
+              validTill : moment(position.validTill).format('MM/DD/YYYY'),
+              candidate: position.candidate
+            }
+            
+            return positionData;           
+        }
+    }
   });
 
     return deferred.promise;
@@ -201,12 +225,12 @@ function create(data) {
     return deferred.promise;
 }*/
 
-function updateById(id, data) {
+function updateById(_id, data) {
     var deferred = Q.defer();
     console.log("updateById in services ");
-    console.log("id = " + id);
-    console.log("data test 11= " + data);
-    model.findByIdAndUpdate(id, data, function (err, doc) {
+    console.log("id = " + _id);
+    console.log("data test 11= " + JSON.stringify(data));
+    model.findByIdAndUpdate(_id, data, function (err, doc) {
         if (err) {
             deferred.reject(err);
             system.error({err:err},'Error in Position Update By Id Api Service');            

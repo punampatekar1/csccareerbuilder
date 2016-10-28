@@ -3,7 +3,7 @@
 angular.module('feedbackDirective', ['ngRateIt','ngAnimate', 'toaster'])
 
 .controller('feedbackDirectiveControllerMain', ['$scope', '$http','$rootScope','$timeout','toaster','$location','$filter', '$window', function($scope, $http, $rootScope,$timeout,toaster,$location,$filter, $window) {
-// console.log($scope.feedbackModel);
+  console.log($scope.feedbackModel);
     console.log("$scope.fbid" + $scope.fbid);
   if($scope.feedbackModel === undefined || $scope.feedbackModel === "")
     $scope.showFlag = "none";
@@ -24,8 +24,9 @@ if($scope.fbid == undefined || $scope.fbid == '' || $scope.fbid == null)
                 console.log("$scope.feedbackId = " + $scope.feedbackId);
             }
         }
-    });  
+    })  
       
+    console.log("hererererereeeeeeeeeeeeeeeeee  $scope.feedbackId = " + $scope.feedbackId);
     if($scope.feedbackId==""){
       $scope.showFlag = "none";
       return;

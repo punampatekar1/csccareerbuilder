@@ -74,7 +74,8 @@ var userSchema = mongoose.Schema({
     token            : {type: Object},
     status           : {type: String, default: 'Active'},
     memberOf         : [{ type: Schema.Types.ObjectId, ref: 'group' }],
-    attachment       : { type: String, trim: true }
+    theme            : {type: String},
+    attachment       : { type: String, trim: true }    
 });
 
 // Execute before each user.save() call

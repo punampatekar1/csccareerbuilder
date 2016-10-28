@@ -1,0 +1,34 @@
+<div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="OPEN POSITIONS" query='query' ></div>
+<!--script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script-->
+<div class="container">
+  <div class="row searchWrapper">
+    <div class="col-sm-9 col-md-4 col-xs-6">
+      <input type="text" class="form-control" placeholder="Search" ng-model="search.$" />
+    </div>
+    <div class="col-sm-3 col-md-6 col-xs-6">
+      <div ng-include src="'/public/m/positions/sort.html'"></div>
+    </div>
+ </div><!--row end here -->
+ 
+
+  <div class="row" ng-controller="positionsCtrl">
+    
+    <button export-to-csv class="jobDesUploadBtn">Download</button>
+  <table id="exportable" class="table table-striped table-condensed table-responsive table-hover">
+      <thead class="data-grid-header">
+         <tr>
+            <th>Position ID</th>
+            <th>Title</th>
+            <th>Location</th>           
+         </tr>         
+      </thead>
+      <tbody class="data-grid-data">
+         <tr ng-repeat="position in positionList | filter: search">
+            <td>{{position.positionId}}</td>
+            <td>{{position.jobTitle}}</td>
+            <td>{{position.location}}</td>            
+         </tr>
+      </tbody>
+   </table>
+  </div><!--row end here -->
+</div><!--container end here -->

@@ -58,6 +58,7 @@ function getOneById(id){
                 id:feedbackDef._id,
                 title:feedbackDef.title,
 				item:feedbackDef.item, 
+                category:feedbackDef.category,
 				createdBy:feedbackDef.createdBy,
                 createdOn:feedbackDef.createdOn
 			}

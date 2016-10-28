@@ -190,14 +190,18 @@ module.exports = {
                 "/public/m/positions/positions.js",
                 "/public/m/positions/positionsCtrl.js",
                 "/public/assets/m/css/openpositions.css",
-                "/public/assets/m/css/userview.css"                
+                "/public/assets/m/css/feedbackadd.css",
+                "/public/assets/m/css/userview.css",
+                "/public/assets/m/css/dragCandidate.css"
             ],
             
             "prod":[
                 "/public/m/positions/positions.js",
                 "/public/m/positions/positionsCtrl.js",
                 "/public/assets/m/css/openpositions.css",
-                "/public/assets/m/css/userview.css"               
+                "/public/assets/m/css/feedbackadd.css",
+                "/public/assets/m/css/userview.css",
+                "/public/assets/m/css/dragCandidate.css"               
             ]
         },
 

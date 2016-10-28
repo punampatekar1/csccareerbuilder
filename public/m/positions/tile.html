@@ -8,7 +8,7 @@
   background: #FFF none repeat scroll 0% 0%;
   box-shadow: 10px 10px 5px #888888;
   box-sizing: border-box;
-  border: 1px solid #FFF;
+  border: 1px solid #008ae6;
   border-radius: 2px;
   overflow: hidden;
   width: 303px;
@@ -26,6 +26,28 @@
 .jobsContainer ul{
   margin-left: -45px;
 }
+   
+/*.ng-enter{
+    transition:0.75s;
+    opacity:0;
+}
+    
+.ng-enter-stagger{
+    transition-delay:0.1s;
+}
+    
+.ng-enter-active{
+    opacity:1;
+}
+    
+.ng-leave{
+    transition:1.25s;
+    opacity:1;
+}
+    
+.ng-leave-active{
+    opacity:0;
+}*/
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 374px){
   .jItem{
@@ -79,9 +101,9 @@
                       <ul class="dropdown-menu">
                           <li><a href="#/positions/{{position.positionId}}/candidates">Candidates Applied</a></li>
                           <li class="divider"></li>
-                          <li><a href="#/feedbackTmpl/attach/{{position.positionId}}">Attach Feedback Query</a></li>
+                          <li><a href="#/feedbackTmpl/attach/{{position.positionId}}">Attach Feedback Template</a></li>
                           <li class="divider"></li>
-                          <li><a target="_blank" href="/public/uploads/jd/{{position.positionId}}.doc">View JD</a></li>
+                          <li><a target="_blank" href="/public/uploads/jd/{{position.positionId}}.pdf">View JD</a></li>
                           <li class="divider"></li>
                           <li><a href="#/contacts/:city">View Feedback</a></li>
                       </ul>
@@ -111,7 +133,7 @@
                     </div>
                   </section>
 
-            </li>
+              </li>
           </ul>
         </div> 
     </div>   

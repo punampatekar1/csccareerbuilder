@@ -93,6 +93,7 @@ function deleteById(req, res) {
 function updateById(req, res) {
   dataService.updateById(req.params.id, req.body)
     .then(function () {
+      console.log("req.body = " + req.body);
         res.status(200).send("Doc updated successfully");
     })
     .catch(function (err) {

@@ -1,0 +1,64 @@
+<style>
+    #chat{
+        height:500px;   
+        border:2px #6495ED solid;                  
+        width:300px;
+        word-wrap: break-word;
+        overflow-y : auto;
+        background-image: url("/public/assets/m/img/bg/chat-bckgrd.jpg");
+    } 
+    
+    .btn-green{
+        width: 50px;
+        height: 20px;
+        color: white;
+        background-color: #53c653;
+    }
+    
+    .txt-color-brown{
+        color: #cc0000;
+    }
+    
+    .txt-color-blue{
+        color: #0000b3;
+    }
+    
+    .increase-font{
+        font-size: 1.1em;
+    }
+    
+    .increase-font1{
+        font-size: 1em;
+    }
+    
+    .reduce-font{
+        font-size: 0.7em;
+    }
+    
+</style>
+
+<div id="profile-details" header showprofile="false" icon="fa fa-plane" title1="Real Time Chat" query='query' ></div>
+
+<div class="container">
+   <div id="chat">
+        <div  ng-repeat="message in messages track by $index">
+            <div ng-if="loggedinuser == message.username" class="representative-designation txt-color-brown increase-font">{{message.username}}</div>  
+            <div ng-if="loggedinuser != message.username" class="representative-designation txt-color-blue increase-font">{{message.username}}</div>  
+            <div class="representative-designation increase-font1"> {{message.message}}</div>
+            <div align="right" class="representative-designation reduce-font"> {{message.textedTime}}</div>
+            <br>
+       </div>    
+    </div>
+    
+    <br>
+
+    <div>
+      <form id="send-message">
+            <input size="35" id="message" ng-model="textMessage" placeholder="Type text here.." vaue="{{textMessage}}">
+            <button class=" btn btn-xs btn-green" type="submit" ng-click="sendMessage(textMessage)">Send</button>
+        </form>
+    </div>
+</div>
+
+<script src="/public/libs/socket.io-client/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
